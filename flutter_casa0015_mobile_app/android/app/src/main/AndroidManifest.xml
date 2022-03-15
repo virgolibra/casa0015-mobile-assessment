@@ -4,6 +4,10 @@
         android:label="flutter_casa0015_mobile_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC7Ln8enuUpcYMLRhoIyY2N2DQDpcA-zOU"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
