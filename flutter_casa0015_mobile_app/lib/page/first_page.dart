@@ -22,7 +22,7 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('THINKING SCENTS'),
+        title: const Text('MONEY TRACKER'),
       ),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
