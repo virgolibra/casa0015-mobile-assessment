@@ -56,3 +56,15 @@ Create 2 mode:
 
 Develop local mode first.
 
+
+
+Upload files with Cloud Storage on Android
+
+https://firebase.google.com/docs/storage/android/upload-files
+
+
+
+**What have done:**
+
++ Add SizedBox to limit the buttons widths and heights
++ 

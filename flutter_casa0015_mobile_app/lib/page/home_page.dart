@@ -19,48 +19,65 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-                child: const Text('First Page'), onPressed: () async {}),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.5);
-                    }
-                    return null; // Use the component's default.
+        child: SizedBox(
+          width: 100,
+          height: 350,
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SizedBox(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                    child: const Text('First Page'), onPressed: () async {}),
+              ),
+              SizedBox(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.5);
+                        }
+                        return null; // Use the component's default.
+                      },
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/first_page');
                   },
+                  child: const Text('Settings'),
                 ),
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/first_page');
-              },
-              child: const Text('Settings'),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.5);
-                    }
-                    return null; // Use the component's default.
-                  },
+              SizedBox(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.5);
+                        }
+                        return null; // Use the component's default.
+                      },
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: const Text('About'),
                 ),
               ),
-              onPressed: () {},
-              child: const Text('About'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
