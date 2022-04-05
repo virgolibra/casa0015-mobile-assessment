@@ -34,3 +34,25 @@ https://stackoverflow.com/questions/55000043/flutter-how-to-add-marker-to-google
 
 
 https://www.youtube.com/watch?v=5fzdvPnp5bY
+
+
+
+
+
+---
+
+Update 05 Apr 2022
+
+
+
+##### Idea
+
+Create 2 mode:
+
++ login mode: files and data store in cloud
++ Non login mode (local mode): store files and data locally
+
+
+
+Develop local mode first.
+
