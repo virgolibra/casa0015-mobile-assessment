@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {Navigator.pushNamed(context, '/map_test_page');},
                   child: const Text('About'),
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './theme/custom_theme.dart';
 import './page/first_page.dart';
 import './page/home_page.dart';
+import './page/map_test_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'CASA0015 Assessment'), // home:   MyHomePage(),
       routes: {
         '/first_page': (BuildContext context) => const FirstPage(),
+        '/map_test_page': (BuildContext context) => const MapTestPage(),
 
 
       },

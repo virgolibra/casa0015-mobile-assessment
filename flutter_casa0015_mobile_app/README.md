@@ -67,4 +67,15 @@ https://firebase.google.com/docs/storage/android/upload-files
 **What have done:**
 
 + Add SizedBox to limit the buttons widths and heights
-+ 
+
+
+
+---
+
+Update 07 Apr 2022
+
+**What have done:**
+
++ Use FractionallySizedBox to control the sizebox with factors
++ [Add a marker to the map](https://www.codegrepper.com/code-examples/whatever/flutter+google+map+marker)
++ Get user current location and add to map
