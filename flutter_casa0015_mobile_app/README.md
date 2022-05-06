@@ -79,3 +79,13 @@ Update 07 Apr 2022
 + Use FractionallySizedBox to control the sizebox with factors
 + [Add a marker to the map](https://www.codegrepper.com/code-examples/whatever/flutter+google+map+marker)
 + Get user current location and add to map
+
+
+
+-----
+
+Update 06 May 2022
+
+
+
+Q: Google map exceeded sample count in FrameTime

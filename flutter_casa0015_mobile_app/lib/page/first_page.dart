@@ -23,6 +23,12 @@ class _FirstPageState extends State<FirstPage> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    _getUserLocation();
+    //
+    // _markers.add( Marker(
+    //     markerId: const MarkerId('SomeId2'),
+    //     position: _userCurrentPosition,
+    //     infoWindow: const InfoWindow(title: 'Current Location')));
   }
 
   void _getUserLocation() async {
@@ -82,12 +88,16 @@ class _FirstPageState extends State<FirstPage> {
             ),
             onPressed: () {
               _getUserLocation();
+              mapController.moveCamera( CameraUpdate.newCameraPosition(
+                  CameraPosition(target: _userCurrentPosition, zoom: 13)
+                //17 is new zoom level
+              ));
 
               setState(() {
                 _markers.add( Marker(
                     markerId: const MarkerId('SomeId2'),
                     position: _userCurrentPosition,
-                    infoWindow: const InfoWindow(title: 'Current Location')));
+                    infoWindow: const InfoWindow(title: 'Magic Location')));
               });
             },
             child: const Text('My location'),
