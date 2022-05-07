@@ -89,3 +89,27 @@ Update 06 May 2022
 
 
 Q: Google map exceeded sample count in FrameTime
+
+
+
+----
+
+Update 07 May 2022
+
+https://pub.dev/packages/weather
+
+https://openweathermap.org/
+
+OpenWeather API
+
+https://openweathermap.org/weather-conditions
+
+weather conditions
+
+
+
+Add test weather page
+
+**What have done:**
+
++ Fetch weather based on current location (Temp, humidity, icon, etc).
