@@ -38,6 +38,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.5);
+                        }
+                        return null; // Use the component's default.
+                      },
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/weather_page');
+                  },
+                  child: const Text('Weather'),),
+              ),
+              SizedBox(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                       (Set<MaterialState> states) {
                         if (states.contains(MaterialState.pressed)) {
                           return Theme.of(context)
