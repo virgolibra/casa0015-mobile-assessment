@@ -246,6 +246,22 @@ class _WeatherPageState extends State<WeatherPage> {
     );
   }
 
+  Widget weatherIconNull(){
+    return Container(
+        margin: EdgeInsets.only(top: 10),
+        child: Center(child: CircularProgressIndicator(strokeWidth: 5)));
+  }
+
+  Widget weatherIconNotNull(){
+    return Image(image: NetworkImage('http://openweathermap.org/img/wn/$_weatherIcon@2x.png'));
+  }
+
+  Widget _weatherIconDisplay() => _weatherIcon == null
+      ? weatherIconNull() : weatherIconNotNull();
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -303,10 +319,8 @@ class _WeatherPageState extends State<WeatherPage> {
               'icon: $_weatherIcon Code: $_weatherConditionCode',
               style: TextStyle(fontSize: 15),
             ),
-             Image(
-              image: NetworkImage('http://openweathermap.org/img/wn/$_weatherIcon@2x.png'),
-
-            )
+             _weatherIconDisplay(),
+             // Expanded(child: _weatherIconDisplay()),
           ],
         ),
       ),

@@ -113,3 +113,10 @@ Add test weather page
 **What have done:**
 
 + Fetch weather based on current location (Temp, humidity, icon, etc).
+
+------
+
+Update 09 May 2022
+
++ Fix weather icon null display problem
++ 
