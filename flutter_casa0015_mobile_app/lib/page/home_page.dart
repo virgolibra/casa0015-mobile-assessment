@@ -1,5 +1,6 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'first_page.dart';
+import 'camera_test_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
+                      (Set<MaterialState> states) {
                         if (states.contains(MaterialState.pressed)) {
                           return Theme.of(context)
                               .colorScheme
@@ -52,7 +53,51 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/weather_page');
                   },
-                  child: const Text('Weather'),),
+                  child: const Text('Weather'),
+                ),
+              ),
+              SizedBox(
+                width: 100,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.5);
+                        }
+                        return null; // Use the component's default.
+                      },
+                    ),
+                  ),
+                  // onPressed: () {
+                  //   Navigator.pushNamed(context, '/camera_test_page');
+                  // },
+
+                  onPressed: () async {
+                    try {
+                      WidgetsFlutterBinding.ensureInitialized();
+                      // Obtain a list of the available cameras on the device.
+                      final cameras = await availableCameras();
+                      // Get a specific camera from the list of available cameras.
+                      final firstCamera = cameras.first;
+
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CameraTestPage(
+                            camera: firstCamera,
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
+                  child: const Text('Camera'),
+                ),
               ),
               SizedBox(
                 width: 100,
@@ -94,7 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
-                  onPressed: () {Navigator.pushNamed(context, '/map_test_page');},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/map_test_page');
+                  },
                   child: const Text('About'),
                 ),
               ),

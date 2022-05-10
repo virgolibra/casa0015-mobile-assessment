@@ -119,4 +119,21 @@ Add test weather page
 Update 09 May 2022
 
 + Fix weather icon null display problem
-+ 
+
+
+
+-----------------
+
+Update 10 May 2022
+
++ Taking a picture using camera
+
+
+
+**Add dependencies**
+
+camera https://pub.dev/packages/camera
+
+path_provider https://pub.dev/packages/path_provider
+
+path https://pub.dev/packages/path
