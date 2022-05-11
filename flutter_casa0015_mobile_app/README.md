@@ -128,7 +128,7 @@ Update 10 May 2022
 
 + Taking a picture using camera
 
-
+https://docs.flutter.dev/cookbook/plugins/picture-using-camera
 
 **Add dependencies**
 
