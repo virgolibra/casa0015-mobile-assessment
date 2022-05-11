@@ -68,11 +68,12 @@ class LoginPage extends StatelessWidget {
                   ),
                   // To here.
                   const Header('Discussion'),
-                  GuestBook(
-                    addMessage: (message) =>
-                        appState.addMessageToGuestBook(message),
-                    messages: appState.guestBookMessages,
-                  ),
+                  // GuestBook(
+                  //   addMessage: (message) =>
+                  //       appState.addMessageToGuestBook(message),
+                  //   messages: appState.guestBookMessages,
+                  // ),
+                  const StartHome(title: 'TestStartHome',),
                 ],
               ],
             ),
@@ -405,15 +406,66 @@ class YesNoSelection extends StatelessWidget {
   }
 }
 
-// class LoginPage extends StatefulWidget {
-//   const LoginPage({Key? key, required this.title}) : super(key: key);
+class StartHome extends StatefulWidget {
+  const StartHome({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _StartHomeState createState() => _StartHomeState();
+}
+
+class _StartHomeState extends State<StartHome> {
+  bool pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        SizedBox(
+          width: 100,
+          height: 50,
+          child: ElevatedButton(
+              child: const Text('Test Button'), onPressed: () async {}),
+        ),
+        SizedBox(
+          width: 100,
+          height: 50,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withOpacity(0.5);
+                  }
+                  return null; // Use the component's default.
+                },
+              ),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/home_page');
+            },
+            child: const Text('MainPage'),
+          ),
+        ),
+
+      ],
+    );
+  }
+}
+// class StartHome extends StatefulWidget {
+//   const StartHome({Key? key, required this.title}) : super(key: key);
 //   final String title;
 //
 //   @override
-//   _LoginPageState createState() => _LoginPageState();
+//   _StartHomeState createState() => _StartHomeState();
 // }
 //
-// class _LoginPageState extends State<LoginPage> {
+// class _StartHomeState extends State<StartHome> {
 //   bool pressed = false;
 //
 //   @override
