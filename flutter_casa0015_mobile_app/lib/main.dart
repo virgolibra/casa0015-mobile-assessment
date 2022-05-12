@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_casa0015_mobile_app/page/message_test_page.dart';
 import './theme/custom_theme.dart';
 import './page/first_page.dart';
 import './page/home_page.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         '/first_page': (BuildContext context) => const FirstPage(),
         '/map_test_page': (BuildContext context) => const MapTestPage(),
         '/weather_page': (BuildContext context) => const WeatherPage(),
+        '/message_test_page': (BuildContext context) => const MessageTestPage(),
         // '/camera_test_page': (BuildContext context) =>  CameraTestPage(),
       },
     );

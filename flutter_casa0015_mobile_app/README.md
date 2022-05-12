@@ -147,3 +147,10 @@ Update 11 May 2022
 + Add a login page
 + Test Firebase function
 + Modify login UI
+
+----
+
+Update 12 May 2022
+
++ Create a message test page to test firebase communication on a new page
++ 

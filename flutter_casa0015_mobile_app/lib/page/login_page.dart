@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_casa0015_mobile_app/page/message_test_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class LoginPage extends StatelessWidget {
         children: <Widget>[
           Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
-          const IconAndDetail(Icons.account_balance_rounded , 'Money Tracker'),
+          const IconAndDetail(Icons.account_balance_rounded, 'Money Tracker'),
           const Divider(
             height: 8,
             thickness: 2,
@@ -31,7 +32,8 @@ class LoginPage extends StatelessWidget {
             endIndent: 8,
             color: Colors.grey,
           ),
-          const IconAndDetail(Icons.login_rounded, 'Log in to access Money Tracker'),
+          const IconAndDetail(
+              Icons.login_rounded, 'Log in to access Money Tracker'),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Authentication(
               email: appState.email,
@@ -45,8 +47,6 @@ class LoginPage extends StatelessWidget {
               signOut: appState.signOut,
             ),
           ),
-
-
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +72,9 @@ class LoginPage extends StatelessWidget {
                   //       appState.addMessageToGuestBook(message),
                   //   messages: appState.guestBookMessages,
                   // ),
-                  const StartHome(title: 'TestStartHome',),
+                  const StartHome(
+                    title: 'TestStartHome',
+                  ),
                 ],
               ],
             ),
@@ -303,6 +305,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   ApplicationLoginState _loginState = ApplicationLoginState.loggedOut;
+  // ApplicationLoginState _loginState = ApplicationLoginState.loggedIn;
   ApplicationLoginState get loginState => _loginState;
 
   String? _email;
@@ -511,7 +514,23 @@ class _StartHomeState extends State<StartHome> {
             width: 100,
             height: 50,
             child: ElevatedButton(
-                child: const Text('Test Button'), onPressed: () async {}),
+              child: const Text('MSG Test'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/message_test_page');
+              },
+
+              // onPressed: () async {
+              //   try {
+              //     await Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (context) => const MessageTestPage(),
+              //       ),
+              //     );
+              //   } catch (e) {
+              //     print(e);
+              //   }
+              // },
+            ),
           ),
         ),
         Padding(
@@ -522,7 +541,7 @@ class _StartHomeState extends State<StartHome> {
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
+                  (Set<MaterialState> states) {
                     if (states.contains(MaterialState.pressed)) {
                       return Theme.of(context)
                           .colorScheme
@@ -540,7 +559,6 @@ class _StartHomeState extends State<StartHome> {
             ),
           ),
         ),
-
       ],
     );
   }
