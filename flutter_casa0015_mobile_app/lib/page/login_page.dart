@@ -163,25 +163,25 @@ class LoginPage extends StatelessWidget {
 //   }
 // }
 
-class GuestBookMessage {
-  GuestBookMessage({required this.name, required this.message});
+class SpendingReportMessage {
+  SpendingReportMessage({required this.name, required this.message});
   final String name;
   final String message;
 }
 
 enum Attending { yes, no, unknown }
 
-class GuestBook extends StatefulWidget {
-  const GuestBook({required this.addMessage, required this.messages});
+class SpendingReport extends StatefulWidget {
+  const SpendingReport({required this.addMessage, required this.messages});
   final FutureOr<void> Function(String message) addMessage;
-  final List<GuestBookMessage> messages; // new
+  final List<SpendingReportMessage> messages; // new
 
   @override
-  _GuestBookState createState() => _GuestBookState();
+  _SpendingReportState createState() => _SpendingReportState();
 }
 
-class _GuestBookState extends State<GuestBook> {
-  final _formKey = GlobalKey<FormState>(debugLabel: '_GuestBookState');
+class _SpendingReportState extends State<SpendingReport> {
+  final _formKey = GlobalKey<FormState>(debugLabel: '_SpendingReportState');
   final _controller = TextEditingController();
 
   @override
@@ -260,16 +260,16 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loginState = ApplicationLoginState.loggedIn;
-        _guestBookSubscription = FirebaseFirestore.instance
-            .collection('guestbook')
+        _spendingReportSubscription = FirebaseFirestore.instance
+            .collection('SpendingReport')
             .orderBy('timestamp', descending: true)
             .limit(3)
             .snapshots()
             .listen((snapshot) {
-          _guestBookMessages = [];
+          _spendingReportMessages = [];
           for (final document in snapshot.docs) {
-            _guestBookMessages.add(
-              GuestBookMessage(
+            _spendingReportMessages.add(
+              SpendingReportMessage(
                 name: document.data()['name'] as String,
                 message: document.data()['text'] as String,
               ),
@@ -296,8 +296,8 @@ class ApplicationState extends ChangeNotifier {
         });
       } else {
         _loginState = ApplicationLoginState.loggedOut;
-        _guestBookMessages = [];
-        _guestBookSubscription?.cancel();
+        _spendingReportMessages = [];
+        _spendingReportSubscription?.cancel();
         _attendingSubscription?.cancel(); // new
       }
       notifyListeners();
@@ -311,9 +311,9 @@ class ApplicationState extends ChangeNotifier {
   String? _email;
   String? get email => _email;
 
-  StreamSubscription<QuerySnapshot>? _guestBookSubscription;
-  List<GuestBookMessage> _guestBookMessages = [];
-  List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+  StreamSubscription<QuerySnapshot>? _spendingReportSubscription;
+  List<SpendingReportMessage> _spendingReportMessages = [];
+  List<SpendingReportMessage> get spendingReportMessages => _spendingReportMessages;
 
   int _attendees = 0;
   int get attendees => _attendees;
@@ -403,13 +403,13 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
-  Future<DocumentReference> addMessageToGuestBook(String message) {
+  Future<DocumentReference> addMessageToSpendingReport(String message) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
 
     return FirebaseFirestore.instance
-        .collection('guestbook')
+        .collection('SpendingReport')
         .add(<String, dynamic>{
       'text': message,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
