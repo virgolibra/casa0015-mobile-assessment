@@ -17,19 +17,27 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Firebase Meetup'),
+        title: const Text('Money Tracker'),
       ),
       body: ListView(
         children: <Widget>[
           Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
-          const IconAndDetail(Icons.calendar_today, 'October 10'),
-          const IconAndDetail(Icons.location_city, 'San Francisco'),
+          const IconAndDetail(Icons.account_balance_rounded , 'Money Tracker'),
+          const Divider(
+            height: 8,
+            thickness: 2,
+            indent: 8,
+            endIndent: 8,
+            color: Colors.grey,
+          ),
+          const IconAndDetail(Icons.login_rounded, 'Log in to access Money Tracker'),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Authentication(
               email: appState.email,
               loginState: appState.loginState,
               startLoginFlow: appState.startLoginFlow,
+              endLoginFlow: appState.endLoginFlow,
               verifyEmail: appState.verifyEmail,
               signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
               cancelRegistration: appState.cancelRegistration,
@@ -37,37 +45,28 @@ class LoginPage extends StatelessWidget {
               signOut: appState.signOut,
             ),
           ),
-          const Divider(
-            height: 8,
-            thickness: 1,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
-          ),
-          const Header("What we'll be doing"),
-          const Paragraph(
-            'Join us for a day full of Firebase Workshops and Pizza!',
-          ),
+
+
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Add from here
-                if (appState.attendees >= 2)
-                  Paragraph('${appState.attendees} people going')
-                else if (appState.attendees == 1)
-                  const Paragraph('1 person going')
-                else
-                  const Paragraph('No one going'),
+                // if (appState.attendees >= 2)
+                //   Paragraph('${appState.attendees} people going')
+                // else if (appState.attendees == 1)
+                //   const Paragraph('1 person going')
+                // else
+                //   const Paragraph('No one going'),
                 // To here.
                 if (appState.loginState == ApplicationLoginState.loggedIn) ...[
                   // Add from here
-                  YesNoSelection(
-                    state: appState.attending,
-                    onSelection: (attending) => appState.attending = attending,
-                  ),
+                  // YesNoSelection(
+                  //   state: appState.attending,
+                  //   onSelection: (attending) => appState.attending = attending,
+                  // ),
                   // To here.
-                  const Header('Discussion'),
+                  // const Header('Discussion'),
                   // GuestBook(
                   //   addMessage: (message) =>
                   //       appState.addMessageToGuestBook(message),
@@ -78,11 +77,89 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           ),
+          const Header("CASA0015 Assessment"),
+          const Paragraph(
+            'Mobile application development for casa0015-assessment',
+          ),
         ],
       ),
     );
   }
 }
+
+// class LoginPage extends StatelessWidget {
+//   const LoginPage({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Firebase Meetup'),
+//       ),
+//       body: ListView(
+//         children: <Widget>[
+//           Image.asset('assets/image1.jpg'),
+//           const SizedBox(height: 8),
+//           const IconAndDetail(Icons.account_balance_rounded , 'Money Tracker'),
+//           const IconAndDetail(Icons.location_city, 'San Francisco'),
+//           Consumer<ApplicationState>(
+//             builder: (context, appState, _) => Authentication(
+//               email: appState.email,
+//               loginState: appState.loginState,
+//               startLoginFlow: appState.startLoginFlow,
+//               verifyEmail: appState.verifyEmail,
+//               signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
+//               cancelRegistration: appState.cancelRegistration,
+//               registerAccount: appState.registerAccount,
+//               signOut: appState.signOut,
+//             ),
+//           ),
+//           const Divider(
+//             height: 8,
+//             thickness: 1,
+//             indent: 8,
+//             endIndent: 8,
+//             color: Colors.grey,
+//           ),
+//           const Header("What we'll be doing"),
+//           const Paragraph(
+//             'Join us for a day full of Firebase Workshops and Pizza!',
+//           ),
+//           Consumer<ApplicationState>(
+//             builder: (context, appState, _) => Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 // Add from here
+//                 if (appState.attendees >= 2)
+//                   Paragraph('${appState.attendees} people going')
+//                 else if (appState.attendees == 1)
+//                   const Paragraph('1 person going')
+//                 else
+//                   const Paragraph('No one going'),
+//                 // To here.
+//                 if (appState.loginState == ApplicationLoginState.loggedIn) ...[
+//                   // Add from here
+//                   YesNoSelection(
+//                     state: appState.attending,
+//                     onSelection: (attending) => appState.attending = attending,
+//                   ),
+//                   // To here.
+//                   const Header('Discussion'),
+//                   // GuestBook(
+//                   //   addMessage: (message) =>
+//                   //       appState.addMessageToGuestBook(message),
+//                   //   messages: appState.guestBookMessages,
+//                   // ),
+//                   const StartHome(title: 'TestStartHome',),
+//                 ],
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class GuestBookMessage {
   GuestBookMessage({required this.name, required this.message});
@@ -261,6 +338,11 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void endLoginFlow() {
+    _loginState = ApplicationLoginState.loggedOut;
+    notifyListeners();
+  }
+
   Future<void> verifyEmail(
     String email,
     void Function(FirebaseAuthException e) errorCallback,
@@ -420,36 +502,42 @@ class _StartHomeState extends State<StartHome> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        SizedBox(
-          width: 100,
-          height: 50,
-          child: ElevatedButton(
-              child: const Text('Test Button'), onPressed: () async {}),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: SizedBox(
+            width: 100,
+            height: 50,
+            child: ElevatedButton(
+                child: const Text('Test Button'), onPressed: () async {}),
+          ),
         ),
-        SizedBox(
-          width: 100,
-          height: 50,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withOpacity(0.5);
-                  }
-                  return null; // Use the component's default.
-                },
+        Padding(
+          padding: const EdgeInsets.only(top: 18, bottom: 20),
+          child: SizedBox(
+            width: 100,
+            height: 50,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.5);
+                    }
+                    return null; // Use the component's default.
+                  },
+                ),
               ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/home_page');
+              },
+              child: const Text('MainPage'),
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/home_page');
-            },
-            child: const Text('MainPage'),
           ),
         ),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 import 'widgets.dart';
 
@@ -15,6 +16,7 @@ class Authentication extends StatelessWidget {
     required this.loginState,
     required this.email,
     required this.startLoginFlow,
+    required this.endLoginFlow,
     required this.verifyEmail,
     required this.signInWithEmailAndPassword,
     required this.cancelRegistration,
@@ -25,6 +27,7 @@ class Authentication extends StatelessWidget {
   final ApplicationLoginState loginState;
   final String? email;
   final void Function() startLoginFlow;
+  final void Function() endLoginFlow;
   final void Function(
     String email,
     void Function(Exception e) error,
@@ -47,60 +50,105 @@ class Authentication extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (loginState) {
       case ApplicationLoginState.loggedOut:
-        return Row(
+        return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
-              child: StyledButton(
+              padding: const EdgeInsets.only(left: 0, bottom: 8),
+              child: StyledIconButton2(
                 onPressed: () {
                   startLoginFlow();
                 },
-                child: const Text('RSVP'),
+                label: const Icon(Icons.login_rounded),
+                icon: const Text('Login'),
               ),
             ),
           ],
         );
       case ApplicationLoginState.emailAddress:
-        return EmailForm(
-            callback: (email) => verifyEmail(
-                email, (e) => _showErrorDialog(context, 'Invalid email', e)));
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24),
+              child: StyledIconButton(
+                onPressed: () => endLoginFlow(),
+                label: const Text('Cancel'),
+                icon: const Icon(Icons.keyboard_arrow_left_rounded),
+              ),
+            ),
+            EmailForm(
+                callback: (email) => verifyEmail(email,
+                    (e) => _showErrorDialog(context, 'Invalid email', e))),
+          ],
+        );
       case ApplicationLoginState.password:
-        return PasswordForm(
-          email: email!,
-          login: (email, password) {
-            signInWithEmailAndPassword(email, password,
-                (e) => _showErrorDialog(context, 'Failed to sign in', e));
-          },
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24),
+              child: StyledIconButton(
+                onPressed: () => endLoginFlow(),
+                label: const Text('Cancel'),
+                icon: const Icon(Icons.keyboard_arrow_left_rounded),
+              ),
+            ),
+            PasswordForm(
+              email: email!,
+              login: (email, password) {
+                signInWithEmailAndPassword(email, password,
+                    (e) => _showErrorDialog(context, 'Failed to sign in', e));
+              },
+            ),
+          ],
         );
       case ApplicationLoginState.register:
-        return RegisterForm(
-          email: email!,
-          cancel: () {
-            cancelRegistration();
-          },
-          registerAccount: (
-            email,
-            displayName,
-            password,
-          ) {
-            registerAccount(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24),
+              child: StyledIconButton(
+                onPressed: () => endLoginFlow(),
+                label: const Text('Cancel'),
+                icon: const Icon(Icons.keyboard_arrow_left_rounded),
+              ),
+            ),
+            RegisterForm(
+              email: email!,
+              cancel: () {
+                cancelRegistration();
+              },
+              registerAccount: (
                 email,
                 displayName,
                 password,
-                (e) =>
-                    _showErrorDialog(context, 'Failed to create account', e));
-          },
+              ) {
+                registerAccount(
+                    email,
+                    displayName,
+                    password,
+                    (e) => _showErrorDialog(
+                        context, 'Failed to create account', e));
+              },
+            ),
+          ],
         );
       case ApplicationLoginState.loggedIn:
-        return Row(
+        return Column(
           children: [
+            Text(
+              'Signed in ($email)',
+              style: const TextStyle(fontSize: 18,),
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
-              child: StyledButton(
+              padding: const EdgeInsets.only(left: 0, bottom: 8),
+              child: StyledIconButton2(
                 onPressed: () {
                   signOut();
                 },
-                child: const Text('LOGOUT'),
+                label: const Text('LOGOUT'),
+                icon: const Icon(Icons.logout_rounded),
               ),
             ),
           ],
@@ -140,7 +188,7 @@ class Authentication extends StatelessWidget {
               },
               child: const Text(
                 'OK',
-                style: TextStyle(color: Colors.deepPurple),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
@@ -194,13 +242,18 @@ class _EmailFormState extends State<EmailForm> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 16.0, horizontal: 30),
-                      child: StyledButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            widget.callback(_controller.text);
-                          }
-                        },
-                        child: const Text('NEXT'),
+                      child: Row(
+                        children: [
+                          StyledIconButton2(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                widget.callback(_controller.text);
+                              }
+                            },
+                            icon: const Text('NEXT'),
+                            label: Icon(Icons.keyboard_arrow_right_rounded),
+                          ),
+                        ],
                       ),
                     ),
                   ],

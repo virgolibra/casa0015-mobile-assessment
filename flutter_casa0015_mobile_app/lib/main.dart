@@ -36,16 +36,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Firebase Test App',
-      theme: ThemeData(
-        buttonTheme: Theme.of(context).buttonTheme.copyWith(
-              highlightColor: Colors.deepPurple,
-            ),
-        primarySwatch: Colors.deepPurple,
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      // theme: ThemeData(
+      //   buttonTheme: Theme.of(context).buttonTheme.copyWith(
+      //         highlightColor: Colors.deepPurple,
+      //       ),
+      //   // primaryColor: Colors.yellow[700],
+      //   primarySwatch: Colors.deepPurple,
+      //   textTheme: GoogleFonts.robotoTextTheme(
+      //     Theme.of(context).textTheme,
+      //   ),
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      // ),
+      theme: CustomTheme.lightTheme,
       home: const LoginPage(), // home:   MyHomePage(),
       routes: {
         '/home_page': (BuildContext context) =>
