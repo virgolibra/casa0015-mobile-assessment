@@ -153,4 +153,8 @@ Update 11 May 2022
 Update 12 May 2022
 
 + Create a message test page to test firebase communication on a new page
-+ 
++ Test to add a type field to firebase collection
+
+
+
+To be solved: How to select the unique user data and display.
