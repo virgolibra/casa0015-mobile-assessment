@@ -164,16 +164,18 @@ class LoginPage extends StatelessWidget {
 // }
 
 class SpendingReportMessage {
-  SpendingReportMessage({required this.name, required this.message});
+  SpendingReportMessage(
+      {required this.name, required this.message, required this.type});
   final String name;
   final String message;
+  final String type;
 }
 
 enum Attending { yes, no, unknown }
 
 class SpendingReport extends StatefulWidget {
   const SpendingReport({required this.addMessage, required this.messages});
-  final FutureOr<void> Function(String message) addMessage;
+  final FutureOr<void> Function(String message, String type) addMessage;
   final List<SpendingReportMessage> messages; // new
 
   @override
@@ -183,6 +185,7 @@ class SpendingReport extends StatefulWidget {
 class _SpendingReportState extends State<SpendingReport> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_SpendingReportState');
   final _controller = TextEditingController();
+  final _controller2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -195,26 +198,51 @@ class _SpendingReportState extends State<SpendingReport> {
             key: _formKey,
             child: Row(
               children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Leave a message',
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      width: 200,
+                      child: TextFormField(
+                        controller: _controller,
+                        decoration: const InputDecoration(
+                          hintText: 'Leave a message',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your message to continue';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your message to continue';
-                      }
-                      return null;
-                    },
-                  ),
+                    SizedBox(
+
+                      width: 200,
+                      child: TextFormField(
+                        controller: _controller2,
+                        decoration: const InputDecoration(
+                          hintText: 'A fake text Field',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your message to continue';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(width: 8),
                 StyledButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await widget.addMessage(_controller.text);
+                      await widget.addMessage(
+                          _controller.text, _controller2.text);
                       _controller.clear();
+                      _controller2.clear();
                     }
                   },
                   child: Row(
@@ -230,8 +258,9 @@ class _SpendingReportState extends State<SpendingReport> {
           ),
         ),
         const SizedBox(height: 8),
+        // ------MESSAGE display ----------------------------------
         for (var message in widget.messages)
-          Paragraph('${message.name}: ${message.message}'),
+          Paragraph('${message.name}: ${message.message}: ${message.type}'),
         const SizedBox(height: 8),
       ],
     );
@@ -262,8 +291,9 @@ class ApplicationState extends ChangeNotifier {
         _loginState = ApplicationLoginState.loggedIn;
         _spendingReportSubscription = FirebaseFirestore.instance
             .collection('SpendingReport')
-            .orderBy('timestamp', descending: true)
+            // .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .limit(3)
+            .orderBy('timestamp', descending: true)
             .snapshots()
             .listen((snapshot) {
           _spendingReportMessages = [];
@@ -272,6 +302,7 @@ class ApplicationState extends ChangeNotifier {
               SpendingReportMessage(
                 name: document.data()['name'] as String,
                 message: document.data()['text'] as String,
+                type: document.data()['type'] as String,
               ),
             );
           }
@@ -313,7 +344,8 @@ class ApplicationState extends ChangeNotifier {
 
   StreamSubscription<QuerySnapshot>? _spendingReportSubscription;
   List<SpendingReportMessage> _spendingReportMessages = [];
-  List<SpendingReportMessage> get spendingReportMessages => _spendingReportMessages;
+  List<SpendingReportMessage> get spendingReportMessages =>
+      _spendingReportMessages;
 
   int _attendees = 0;
   int get attendees => _attendees;
@@ -403,7 +435,8 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
-  Future<DocumentReference> addMessageToSpendingReport(String message) {
+  Future<DocumentReference> addMessageToSpendingReport(
+      String message, String type) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -412,6 +445,7 @@ class ApplicationState extends ChangeNotifier {
         .collection('SpendingReport')
         .add(<String, dynamic>{
       'text': message,
+      'type': type,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
