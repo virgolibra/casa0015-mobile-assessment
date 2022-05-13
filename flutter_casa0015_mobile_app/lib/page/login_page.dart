@@ -218,7 +218,6 @@ class _SpendingReportState extends State<SpendingReport> {
                       ),
                     ),
                     SizedBox(
-
                       width: 200,
                       child: TextFormField(
                         controller: _controller2,
@@ -291,9 +290,11 @@ class ApplicationState extends ChangeNotifier {
         _loginState = ApplicationLoginState.loggedIn;
         _spendingReportSubscription = FirebaseFirestore.instance
             .collection('SpendingReport')
-            // .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-            .limit(3)
+            .doc(user.uid)
+            .collection(user.uid)
+            // .where('userId', isEqualTo: user.uid)
             .orderBy('timestamp', descending: true)
+            // .limit(3)
             .snapshots()
             .listen((snapshot) {
           _spendingReportMessages = [];
@@ -435,6 +436,22 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
+  // Future<DocumentReference> addMessageToSpendingReport(
+  //     String message, String type) {
+  //   if (_loginState != ApplicationLoginState.loggedIn) {
+  //     throw Exception('Must be logged in');
+  //   }
+  //
+  //   return FirebaseFirestore.instance
+  //       .collection('SpendingReport')
+  //       .add(<String, dynamic>{
+  //     'text': message,
+  //     'type': type,
+  //     'timestamp': DateTime.now().millisecondsSinceEpoch,
+  //     'name': FirebaseAuth.instance.currentUser!.displayName,
+  //     'userId': FirebaseAuth.instance.currentUser!.uid,
+  //   });
+  // }
   Future<DocumentReference> addMessageToSpendingReport(
       String message, String type) {
     if (_loginState != ApplicationLoginState.loggedIn) {
@@ -443,6 +460,8 @@ class ApplicationState extends ChangeNotifier {
 
     return FirebaseFirestore.instance
         .collection('SpendingReport')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection(FirebaseAuth.instance.currentUser!.uid)
         .add(<String, dynamic>{
       'text': message,
       'type': type,
