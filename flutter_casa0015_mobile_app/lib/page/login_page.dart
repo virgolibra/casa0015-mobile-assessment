@@ -11,6 +11,8 @@ import '../firebase_options.dart';
 import '../authentication.dart';
 import '../widgets.dart';
 
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -165,10 +167,14 @@ class LoginPage extends StatelessWidget {
 
 class SpendingReportMessage {
   SpendingReportMessage(
-      {required this.name, required this.message, required this.type});
+      {required this.name,
+      required this.message,
+      required this.type,
+      });
   final String name;
   final String message;
   final String type;
+  // final Timestamp timestamp;
 }
 
 enum Attending { yes, no, unknown }
@@ -258,8 +264,89 @@ class _SpendingReportState extends State<SpendingReport> {
         ),
         const SizedBox(height: 8),
         // ------MESSAGE display ----------------------------------
-        for (var message in widget.messages)
-          Paragraph('${message.name}: ${message.message}: ${message.type}'),
+        //
+        // SizedBox(
+        //   height: 300,
+        //   child: StickyGroupedListView(
+        //     elements: widget.messages,
+        //     groupBy: (SpendingReportMessage message) => DateTime(
+        //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).year,
+        //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).month,
+        //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).day),
+        //     groupSeparatorBuilder: (SpendingReportMessage message) => Container(
+        //       height: 50,
+        //       child: Align(
+        //         alignment: Alignment.center,
+        //         child: Container(
+        //           width: 120,
+        //           decoration: BoxDecoration(
+        //             color: Colors.blue[300],
+        //             border: Border.all(
+        //               color: Colors.blue[300]!,
+        //             ),
+        //             borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        //           ),
+        //           child: Padding(
+        //             padding: const EdgeInsets.all(8.0),
+        //             child: Text(
+        //               '${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).day}. ${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).month}, ${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).year}',
+        //               textAlign: TextAlign.center,
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     itemBuilder: (_, SpendingReportMessage message) {
+        //       return Card(
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(6.0),
+        //         ),
+        //         elevation: 8.0,
+        //         margin:
+        //             new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        //         child: Container(
+        //           child: ListTile(
+        //             contentPadding:
+        //                 EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        //             leading: Icon(Icons.account_balance),
+        //             title: Text(message.name),
+        //             subtitle: Text(message.type),
+        //             // trailing: Text('${message.timestamp.toDate().hour}:00'),
+        //             trailing: Text(
+        //                 '${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).hour}:00'),
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
+        //========================================================
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 350,
+          ),
+          child: ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: widget.messages.length,
+            shrinkWrap: false,
+            // addAutomaticKeepAlives: false,
+            // addSemanticIndexes: true,
+            // semanticChildCount: 3,
+
+            itemBuilder: (BuildContext context, int index) {
+              return ListElement(
+                  text: widget.messages[index].name,
+                  subText: widget.messages[index].message,
+              price: widget.messages[index].type,);
+            },
+            // children: <Widget>[
+            //   for (var message in widget.messages)
+            //   // Paragraph('${message.name}: ${message.message}: ${message.type}'),
+            //     ListElement(message.name, message.message),
+            // ],
+          ),
+        ),
+
         const SizedBox(height: 8),
       ],
     );
@@ -304,6 +391,7 @@ class ApplicationState extends ChangeNotifier {
                 name: document.data()['name'] as String,
                 message: document.data()['text'] as String,
                 type: document.data()['type'] as String,
+                // timestamp: document.data()['timestamp'] as Timestamp,
               ),
             );
           }

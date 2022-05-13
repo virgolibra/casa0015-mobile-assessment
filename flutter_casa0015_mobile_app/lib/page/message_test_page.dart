@@ -33,7 +33,7 @@ class MessageTestPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Image.asset('assets/image1.jpg'),
+          // Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
           const IconAndDetail(Icons.account_balance_rounded, 'Money Tracker'),
           const Divider(
