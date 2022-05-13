@@ -31,7 +31,7 @@ class MessageTestPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Message Page'),
       ),
-      body: ListView(
+      body: Column(
         children: <Widget>[
           // Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
@@ -43,7 +43,9 @@ class MessageTestPage extends StatelessWidget {
             endIndent: 8,
             color: Colors.grey,
           ),
-          const IconAndDetail(Icons.login_rounded, 'Message Test Page'),
+          Container(
+              color: Colors.orange,
+              child: const IconAndDetail(Icons.login_rounded, 'Message Test Page')),
           const Header('Discussion'),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
