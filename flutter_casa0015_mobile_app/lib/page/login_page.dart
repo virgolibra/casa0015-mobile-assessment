@@ -888,9 +888,11 @@ class YesNoSelection extends StatelessWidget {
   }
 }
 
+
 class StartHome extends StatefulWidget {
-  const StartHome({Key? key, required this.title}) : super(key: key);
+  const StartHome({Key? key, required this.title, }) : super(key: key);
   final String title;
+  // final String email;
 
   @override
   _StartHomeState createState() => _StartHomeState();
@@ -913,7 +915,11 @@ class _StartHomeState extends State<StartHome> {
             child: ElevatedButton(
               child: const Text('MSG Test'),
               onPressed: () {
-                Navigator.pushNamed(context, '/message_test_page');
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MessageTestPage(email: 'widget.email'),
+                  ),
+                );
               },
 
               // onPressed: () async {
@@ -938,7 +944,7 @@ class _StartHomeState extends State<StartHome> {
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
+                      (Set<MaterialState> states) {
                     if (states.contains(MaterialState.pressed)) {
                       return Theme.of(context)
                           .colorScheme
@@ -960,6 +966,86 @@ class _StartHomeState extends State<StartHome> {
     );
   }
 }
+
+
+// class StartHome extends StatefulWidget {
+//   const StartHome({Key? key, required this.title}) : super(key: key);
+//   final String title;
+//
+//   @override
+//   _StartHomeState createState() => _StartHomeState();
+// }
+//
+// class _StartHomeState extends State<StartHome> {
+//   bool pressed = false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//       children: <Widget>[
+//         Padding(
+//           padding: const EdgeInsets.only(top: 8.0),
+//           child: SizedBox(
+//             width: 100,
+//             height: 50,
+//             child: ElevatedButton(
+//               child: const Text('MSG Test'),
+//               onPressed: () {
+//                 Navigator.of(context).push(
+//                   MaterialPageRoute(
+//                     builder: (context) => MessageTestPage(email: '@sss'),
+//                   ),
+//                 );
+//               },
+//
+//               // onPressed: () async {
+//               //   try {
+//               //     await Navigator.of(context).push(
+//               //       MaterialPageRoute(
+//               //         builder: (context) => const MessageTestPage(),
+//               //       ),
+//               //     );
+//               //   } catch (e) {
+//               //     print(e);
+//               //   }
+//               // },
+//             ),
+//           ),
+//         ),
+//         Padding(
+//           padding: const EdgeInsets.only(top: 18, bottom: 20),
+//           child: SizedBox(
+//             width: 100,
+//             height: 50,
+//             child: ElevatedButton(
+//               style: ButtonStyle(
+//                 backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+//                   (Set<MaterialState> states) {
+//                     if (states.contains(MaterialState.pressed)) {
+//                       return Theme.of(context)
+//                           .colorScheme
+//                           .primary
+//                           .withOpacity(0.5);
+//                     }
+//                     return null; // Use the component's default.
+//                   },
+//                 ),
+//               ),
+//               onPressed: () {
+//                 Navigator.pushNamed(context, '/home_page');
+//               },
+//               child: const Text('MainPage'),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+//============================================================================
 // class StartHome extends StatefulWidget {
 //   const StartHome({Key? key, required this.title}) : super(key: key);
 //   final String title;

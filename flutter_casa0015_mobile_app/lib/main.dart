@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         '/first_page': (BuildContext context) => const FirstPage(),
         '/map_test_page': (BuildContext context) => const MapTestPage(),
         '/weather_page': (BuildContext context) => const WeatherPage(),
-        '/message_test_page': (BuildContext context) => const MessageTestPage(),
+        // '/message_test_page': (BuildContext context) => const MessageTestPage(),
         '/spending_display_page': (BuildContext context) => const SpendingDisplayPage(),
 
         // '/camera_test_page': (BuildContext context) =>  CameraTestPage(),

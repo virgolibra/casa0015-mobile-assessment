@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-
+import './page/message_test_page.dart';
 import 'widgets.dart';
 
 enum ApplicationLoginState {
@@ -139,7 +139,9 @@ class Authentication extends StatelessWidget {
           children: [
             Text(
               'Signed in ($email)',
-              style: const TextStyle(fontSize: 18,),
+              style: const TextStyle(
+                fontSize: 18,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 0, bottom: 8),
@@ -463,6 +465,12 @@ class _PasswordFormState extends State<PasswordForm> {
                             widget.login(
                               _emailController.text,
                               _passwordController.text,
+                            );
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => MessageTestPage(email: _emailController.text,),
+                              ),
                             );
                           }
                         },

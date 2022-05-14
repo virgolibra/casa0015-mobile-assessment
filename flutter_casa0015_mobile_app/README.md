@@ -196,3 +196,10 @@ To be solved: List view exceed boundary
 Update 14 May 2022
 
 Try to optimise main page
+
+
+
+Pass argument to stateful widgets:
+
+Do not pass parameters to `State` using it's constructor. Only access the parameters using `widget.myField`.
+

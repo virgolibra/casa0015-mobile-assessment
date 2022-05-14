@@ -9,10 +9,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
 import '../authentication.dart';
+import 'drawer_page.dart';
 
 class MessageTestPage extends StatelessWidget {
-  const MessageTestPage({Key? key}) : super(key: key);
-
+  const MessageTestPage({Key? key, required this.email}) : super(key: key);
+  final String email ;
   // Widget build(BuildContext context) {
   //   return Provider<Example>(
   //       create: (_) => Example(),
@@ -29,7 +30,9 @@ class MessageTestPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Message Page'),
+
       ),
+      drawer: DrawerPage(email: email,),
       body: ListView(
         children: <Widget>[
           // Image.asset('assets/image1.jpg'),
@@ -86,6 +89,7 @@ class MessageTestPage extends StatelessWidget {
             child: const Text('Spending'),
             onPressed: () {
               Navigator.pushNamed(context, '/spending_display_page');
+              // Navigator.pop(context);
             },
           ),
           const Header("CASA0015 Assessment"),
