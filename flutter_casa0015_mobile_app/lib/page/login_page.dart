@@ -166,11 +166,11 @@ class LoginPage extends StatelessWidget {
 // }
 
 class SpendingReportMessage {
-  SpendingReportMessage(
-      {required this.name,
-      required this.message,
-      required this.type,
-      });
+  SpendingReportMessage({
+    required this.name,
+    required this.message,
+    required this.type,
+  });
   final String name;
   final String message;
   final String type;
@@ -178,6 +178,317 @@ class SpendingReportMessage {
 }
 
 enum Attending { yes, no, unknown }
+
+// class SpendingReport extends StatefulWidget {
+//   const SpendingReport({required this.addMessage, required this.messages});
+//   final FutureOr<void> Function(String message, String type) addMessage;
+//   final List<SpendingReportMessage> messages; // new
+//
+//   @override
+//   _SpendingReportState createState() => _SpendingReportState();
+// }
+//
+// class _SpendingReportState extends State<SpendingReport> {
+//   final _formKey = GlobalKey<FormState>(debugLabel: '_SpendingReportState');
+//   final _controller = TextEditingController();
+//   final _controller2 = TextEditingController();
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Form(
+//             key: _formKey,
+//             child: Row(
+//               children: [
+//                 Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     SizedBox(
+//                       height: 20,
+//                       width: 200,
+//                       child: TextFormField(
+//                         controller: _controller,
+//                         decoration: const InputDecoration(
+//                           hintText: 'Leave a message',
+//                         ),
+//                         validator: (value) {
+//                           if (value == null || value.isEmpty) {
+//                             return 'Enter your message to continue';
+//                           }
+//                           return null;
+//                         },
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       width: 200,
+//                       child: TextFormField(
+//                         controller: _controller2,
+//                         decoration: const InputDecoration(
+//                           hintText: 'A fake text Field',
+//                         ),
+//                         validator: (value) {
+//                           if (value == null || value.isEmpty) {
+//                             return 'Enter your message to continue';
+//                           }
+//                           return null;
+//                         },
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 const SizedBox(width: 8),
+//                 StyledButton(
+//                   onPressed: () async {
+//                     if (_formKey.currentState!.validate()) {
+//                       await widget.addMessage(
+//                           _controller.text, _controller2.text);
+//                       _controller.clear();
+//                       _controller2.clear();
+//                     }
+//                   },
+//                   child: Row(
+//                     children: const [
+//                       Icon(Icons.send),
+//                       SizedBox(width: 4),
+//                       Text('SEND'),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//         const SizedBox(height: 8),
+//         // ------MESSAGE display ----------------------------------
+//         //
+//         // SizedBox(
+//         //   height: 300,
+//         //   child: StickyGroupedListView(
+//         //     elements: widget.messages,
+//         //     groupBy: (SpendingReportMessage message) => DateTime(
+//         //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).year,
+//         //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).month,
+//         //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).day),
+//         //     groupSeparatorBuilder: (SpendingReportMessage message) => Container(
+//         //       height: 50,
+//         //       child: Align(
+//         //         alignment: Alignment.center,
+//         //         child: Container(
+//         //           width: 120,
+//         //           decoration: BoxDecoration(
+//         //             color: Colors.blue[300],
+//         //             border: Border.all(
+//         //               color: Colors.blue[300]!,
+//         //             ),
+//         //             borderRadius: BorderRadius.all(Radius.circular(20.0)),
+//         //           ),
+//         //           child: Padding(
+//         //             padding: const EdgeInsets.all(8.0),
+//         //             child: Text(
+//         //               '${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).day}. ${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).month}, ${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).year}',
+//         //               textAlign: TextAlign.center,
+//         //             ),
+//         //           ),
+//         //         ),
+//         //       ),
+//         //     ),
+//         //     itemBuilder: (_, SpendingReportMessage message) {
+//         //       return Card(
+//         //         shape: RoundedRectangleBorder(
+//         //           borderRadius: BorderRadius.circular(6.0),
+//         //         ),
+//         //         elevation: 8.0,
+//         //         margin:
+//         //             new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+//         //         child: Container(
+//         //           child: ListTile(
+//         //             contentPadding:
+//         //                 EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+//         //             leading: Icon(Icons.account_balance),
+//         //             title: Text(message.name),
+//         //             subtitle: Text(message.type),
+//         //             // trailing: Text('${message.timestamp.toDate().hour}:00'),
+//         //             trailing: Text(
+//         //                 '${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).hour}:00'),
+//         //           ),
+//         //         ),
+//         //       );
+//         //     },
+//         //   ),
+//         // ),
+//         //========================================================
+//         ConstrainedBox(
+//           constraints: const BoxConstraints(
+//             maxHeight: 350,
+//           ),
+//           child: ListView.builder(
+//             padding: const EdgeInsets.all(8),
+//             itemCount: widget.messages.length,
+//             shrinkWrap: false,
+//             // addAutomaticKeepAlives: false,
+//             // addSemanticIndexes: true,
+//             // semanticChildCount: 3,
+//
+//             itemBuilder: (BuildContext context, int index) {
+//               return ListElement(
+//                   text: widget.messages[index].name,
+//                   subText: widget.messages[index].message,
+//               price: widget.messages[index].type,);
+//             },
+//             // children: <Widget>[
+//             //   for (var message in widget.messages)
+//             //   // Paragraph('${message.name}: ${message.message}: ${message.type}'),
+//             //     ListElement(message.name, message.message),
+//             // ],
+//           ),
+//         ),
+//
+//         const SizedBox(height: 8),
+//       ],
+//     );
+//   }
+// }
+
+class AddSpendingItem extends StatefulWidget {
+  const AddSpendingItem({Key? key, required this.addMessage}) : super(key: key);
+  final FutureOr<void> Function(String message, String type) addMessage;
+  @override
+  _AddSpendingItemState createState() => _AddSpendingItemState();
+}
+
+class _AddSpendingItemState extends State<AddSpendingItem> {
+  final _formKey = GlobalKey<FormState>(debugLabel: '_AddSpendingItemState');
+  final _controller = TextEditingController();
+  final _controller2 = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      width: 200,
+                      child: TextFormField(
+                        controller: _controller,
+                        decoration: const InputDecoration(
+                          hintText: 'Leave a message',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your message to continue';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: TextFormField(
+                        controller: _controller2,
+                        decoration: const InputDecoration(
+                          hintText: 'A fake text Field',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your message to continue';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+                StyledButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await widget.addMessage(
+                          _controller.text, _controller2.text);
+                      _controller.clear();
+                      _controller2.clear();
+                    }
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(Icons.send),
+                      SizedBox(width: 4),
+                      Text('SEND'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+}
+
+class DisplaySpendingItem extends StatefulWidget {
+  const DisplaySpendingItem({Key? key, required this.messages})
+      : super(key: key);
+  final List<SpendingReportMessage> messages; // new
+  @override
+  _DisplaySpendingItemState createState() => _DisplaySpendingItemState();
+}
+
+class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 8),
+        // ------MESSAGE display ----------------------------------
+
+        SizedBox(
+          height: MediaQuery.of(context).size.height ,
+          // height: 600,
+          child: ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: widget.messages.length,
+            // shrinkWrap: false,
+            // addAutomaticKeepAlives: false,
+            // addSemanticIndexes: true,
+            // semanticChildCount: 3,
+
+            itemBuilder: (BuildContext context, int index) {
+              return ListElement(
+                text: widget.messages[index].name,
+                subText: widget.messages[index].message,
+                price: widget.messages[index].type,
+              );
+            },
+            // children: <Widget>[
+            //   for (var message in widget.messages)
+            //   // Paragraph('${message.name}: ${message.message}: ${message.type}'),
+            //     ListElement(message.name, message.message),
+            // ],
+          ),
+        ),
+
+        // const SizedBox(height: 8),
+      ],
+    );
+  }
+}
 
 class SpendingReport extends StatefulWidget {
   const SpendingReport({required this.addMessage, required this.messages});
@@ -264,63 +575,7 @@ class _SpendingReportState extends State<SpendingReport> {
         ),
         const SizedBox(height: 8),
         // ------MESSAGE display ----------------------------------
-        //
-        // SizedBox(
-        //   height: 300,
-        //   child: StickyGroupedListView(
-        //     elements: widget.messages,
-        //     groupBy: (SpendingReportMessage message) => DateTime(
-        //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).year,
-        //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).month,
-        //         DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).day),
-        //     groupSeparatorBuilder: (SpendingReportMessage message) => Container(
-        //       height: 50,
-        //       child: Align(
-        //         alignment: Alignment.center,
-        //         child: Container(
-        //           width: 120,
-        //           decoration: BoxDecoration(
-        //             color: Colors.blue[300],
-        //             border: Border.all(
-        //               color: Colors.blue[300]!,
-        //             ),
-        //             borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        //           ),
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(8.0),
-        //             child: Text(
-        //               '${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).day}. ${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).month}, ${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).year}',
-        //               textAlign: TextAlign.center,
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     itemBuilder: (_, SpendingReportMessage message) {
-        //       return Card(
-        //         shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(6.0),
-        //         ),
-        //         elevation: 8.0,
-        //         margin:
-        //             new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        //         child: Container(
-        //           child: ListTile(
-        //             contentPadding:
-        //                 EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        //             leading: Icon(Icons.account_balance),
-        //             title: Text(message.name),
-        //             subtitle: Text(message.type),
-        //             // trailing: Text('${message.timestamp.toDate().hour}:00'),
-        //             trailing: Text(
-        //                 '${DateTime.fromMicrosecondsSinceEpoch(message.timestamp.millisecondsSinceEpoch).hour}:00'),
-        //           ),
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
-        //========================================================
+
         ConstrainedBox(
           constraints: const BoxConstraints(
             maxHeight: 350,
@@ -335,9 +590,10 @@ class _SpendingReportState extends State<SpendingReport> {
 
             itemBuilder: (BuildContext context, int index) {
               return ListElement(
-                  text: widget.messages[index].name,
-                  subText: widget.messages[index].message,
-              price: widget.messages[index].type,);
+                text: widget.messages[index].name,
+                subText: widget.messages[index].message,
+                price: widget.messages[index].type,
+              );
             },
             // children: <Widget>[
             //   for (var message in widget.messages)

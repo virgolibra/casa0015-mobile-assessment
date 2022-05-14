@@ -188,3 +188,11 @@ https://stackoverflow.com/questions/62125633/how-to-convert-timestamp-to-datetim
 
 
 To be solved: List view exceed boundary
+
+
+
+-----
+
+Update 14 May 2022
+
+Try to optimise main page

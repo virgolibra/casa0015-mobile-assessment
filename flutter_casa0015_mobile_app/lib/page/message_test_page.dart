@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets.dart';
-
+import 'login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
 import '../authentication.dart';
-import 'login_page.dart';
 
 class MessageTestPage extends StatelessWidget {
   const MessageTestPage({Key? key}) : super(key: key);
@@ -31,7 +30,7 @@ class MessageTestPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Message Page'),
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           // Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
@@ -45,17 +44,34 @@ class MessageTestPage extends StatelessWidget {
           ),
           Container(
               color: Colors.orange,
-              child: const IconAndDetail(Icons.login_rounded, 'Message Test Page')),
+              child: const IconAndDetail(
+                  Icons.login_rounded, 'Message Test Page')),
           const Header('Discussion'),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SpendingReport(
+                // SpendingReport(
+                //   addMessage: (message, type) =>
+                //       appState.addMessageToSpendingReport(message, type),
+                //   messages: appState.spendingReportMessages,
+                // ),
+                AddSpendingItem(
                   addMessage: (message, type) =>
                       appState.addMessageToSpendingReport(message, type),
-                  messages: appState.spendingReportMessages,
+                  // messages: appState.spendingReportMessages,
                 ),
+
+                const Divider(
+                  height: 8,
+                  thickness: 2,
+                  indent: 8,
+                  endIndent: 8,
+                  color: Colors.grey,
+                ),
+                // DisplaySpendingItem(
+                //   messages: appState.spendingReportMessages,
+                // ),
               ],
             ),
           ),
@@ -66,6 +82,12 @@ class MessageTestPage extends StatelessWidget {
             endIndent: 8,
             color: Colors.grey,
           ),
+          ElevatedButton(
+            child: const Text('Spending'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/spending_display_page');
+            },
+          ),
           const Header("CASA0015 Assessment"),
           const Paragraph(
             'Mobile application development for casa0015-assessment',
@@ -75,4 +97,3 @@ class MessageTestPage extends StatelessWidget {
     );
   }
 }
-

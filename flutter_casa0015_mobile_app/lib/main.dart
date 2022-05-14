@@ -7,6 +7,7 @@ import './page/home_page.dart';
 import './page/map_test_page.dart';
 import './page/weather_page.dart';
 import './page/login_page.dart';
+import './page/spending_display_page.dart';
 import './page/camera_test_page.dart';
 
 import 'dart:async';
@@ -57,6 +58,8 @@ class MyApp extends StatelessWidget {
         '/map_test_page': (BuildContext context) => const MapTestPage(),
         '/weather_page': (BuildContext context) => const WeatherPage(),
         '/message_test_page': (BuildContext context) => const MessageTestPage(),
+        '/spending_display_page': (BuildContext context) => const SpendingDisplayPage(),
+
         // '/camera_test_page': (BuildContext context) =>  CameraTestPage(),
       },
     );
