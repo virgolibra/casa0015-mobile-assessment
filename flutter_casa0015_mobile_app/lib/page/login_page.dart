@@ -74,8 +74,9 @@ class LoginPage extends StatelessWidget {
                   //       appState.addMessageToGuestBook(message),
                   //   messages: appState.guestBookMessages,
                   // ),
-                  const StartHome(
+                   StartHome(
                     title: 'TestStartHome',
+                    email: appState.email!,
                   ),
                 ],
               ],
@@ -631,6 +632,7 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loginState = ApplicationLoginState.loggedIn;
+        _email = user.email;
         _spendingReportSubscription = FirebaseFirestore.instance
             .collection('SpendingReport')
             .doc(user.uid)
@@ -819,6 +821,7 @@ class ApplicationState extends ChangeNotifier {
   void dispose() {
     // TODO: implement dispose
     _listenerCountSub?.cancel();
+
     super.dispose();
   }
 }
@@ -890,9 +893,9 @@ class YesNoSelection extends StatelessWidget {
 
 
 class StartHome extends StatefulWidget {
-  const StartHome({Key? key, required this.title, }) : super(key: key);
+  const StartHome({Key? key, required this.title, required this.email, }) : super(key: key);
   final String title;
-  // final String email;
+  final String email;
 
   @override
   _StartHomeState createState() => _StartHomeState();
@@ -917,7 +920,7 @@ class _StartHomeState extends State<StartHome> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => MessageTestPage(email: 'widget.email'),
+                    builder: (context) => MessageTestPage(email: widget.email),
                   ),
                 );
               },

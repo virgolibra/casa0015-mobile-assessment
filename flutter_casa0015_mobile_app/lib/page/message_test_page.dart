@@ -46,7 +46,7 @@ class MessageTestPage extends StatelessWidget {
             color: Colors.grey,
           ),
           Container(
-              color: Colors.orange,
+              color: const Color(0xffE09E45),
               child: const IconAndDetail(
                   Icons.login_rounded, 'Message Test Page')),
           const Header('Discussion'),

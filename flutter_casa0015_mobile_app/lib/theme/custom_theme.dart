@@ -32,7 +32,8 @@ class CustomTheme {
             900: Color(0xff936F3E)
           },
         )).copyWith(secondary: const Color(0xff457BE0)),
-        textTheme: GoogleFonts.josefinSansTextTheme(),
+        // textTheme: GoogleFonts.josefinSansTextTheme(),
+        textTheme: GoogleFonts.openSansTextTheme(),
 
         );
   }
