@@ -1,39 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets.dart';
 import 'login_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../firebase_options.dart';
-import '../authentication.dart';
 import 'drawer_page.dart';
 
-class MessageTestPage extends StatelessWidget {
-  const MessageTestPage({Key? key, required this.email}) : super(key: key);
-  final String email ;
-  // Widget build(BuildContext context) {
-  //   return Provider<Example>(
-  //       create: (_) => Example(),
-  //       // we use `builder` to obtain a new `BuildContext` that has access to the provider
-  //       builder: (context) {
-  //         // No longer throws
-  //         return Text(context.watch<Example>()),
-  //       }
-  //   ),
-  // }
+class SpendingAddPage extends StatefulWidget {
+  const SpendingAddPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Message Page'),
+  _SpendingAddPageState createState() => _SpendingAddPageState();
+}
 
-      ),
-      drawer: DrawerPage(email: email,),
-      body: ListView(
+class _SpendingAddPageState extends State<SpendingAddPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color(0xffDEC29B),
+      child: ListView(
         children: <Widget>[
           // Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
@@ -101,3 +84,4 @@ class MessageTestPage extends StatelessWidget {
     );
   }
 }
+

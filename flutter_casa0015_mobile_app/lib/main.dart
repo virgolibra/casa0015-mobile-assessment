@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_casa0015_mobile_app/page/message_test_page.dart';
+import 'package:flutter_casa0015_mobile_app/page/spending_base_page.dart';
 import './theme/custom_theme.dart';
 import './page/first_page.dart';
 import './page/home_page.dart';

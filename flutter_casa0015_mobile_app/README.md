@@ -225,3 +225,17 @@ Not working with launch_background.xml
 
 - Solution: Also make changes in drawable-v21/launch_background.xml. This will be used for API level 21 or higher. **(Solved)**
 
+
+
+Limit keyboard and text field input type:
+
+https://blog.51cto.com/928343994/4895430
+
+
+
+
+
++ Choose category
+  + Bills, Eating out, Delivery, Entertainment, Gifts, Groceries, Travel, shopping, transport, personal care, General. 
+
+https://pub.dev/packages/bottom_bar

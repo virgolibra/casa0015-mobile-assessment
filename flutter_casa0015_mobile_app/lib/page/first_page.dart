@@ -121,6 +121,7 @@ class _FirstPageState extends State<FirstPage> {
           switch (i) {
             case 0:
               Navigator.pop(context);
+
               break;
             case 1:
               break;

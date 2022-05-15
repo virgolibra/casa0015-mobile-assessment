@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import './page/message_test_page.dart';
+import './page/spending_base_page.dart';
 import 'widgets.dart';
 
 enum ApplicationLoginState {
@@ -469,7 +469,7 @@ class _PasswordFormState extends State<PasswordForm> {
 
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => MessageTestPage(email: _emailController.text,),
+                                builder: (context) => SpendingBasePage(email: _emailController.text,),
                               ),
                             );
                           }

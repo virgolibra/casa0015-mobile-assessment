@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_casa0015_mobile_app/page/message_test_page.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_casa0015_mobile_app/page/spending_base_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -400,6 +401,11 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                       width: 200,
                       child: TextFormField(
                         controller: _controller2,
+                        textInputAction: TextInputAction.next,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
+,                        ],
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: const InputDecoration(
                           hintText: 'A fake text Field',
                         ),
@@ -456,11 +462,11 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 8),
+        // const SizedBox(height: 8),
         // ------MESSAGE display ----------------------------------
 
         SizedBox(
-          height: MediaQuery.of(context).size.height ,
+          height: MediaQuery.of(context).size.height*0.8 ,
           // height: 600,
           child: ListView.builder(
             padding: const EdgeInsets.all(8),
@@ -920,7 +926,7 @@ class _StartHomeState extends State<StartHome> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => MessageTestPage(email: widget.email),
+                    builder: (context) => SpendingBasePage(email: widget.email),
                   ),
                 );
               },

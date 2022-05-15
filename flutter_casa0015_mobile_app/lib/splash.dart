@@ -23,11 +23,21 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          child: Text(
-            "Splash Screen",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 100,
+              width: 100,
+              color: Colors.white70,
+            ),
+            Container(
+              child: Text(
+                "Splash Screen",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
       ),
     );
