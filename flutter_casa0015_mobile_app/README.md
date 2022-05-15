@@ -209,3 +209,19 @@ Do not pass parameters to `State` using it's constructor. Only access the parame
 + Add Drawer
 + Save draft version May 15
 + Add about page
+
+----
+
+Update 15 May 2022
+
+
+
++ Adding a splash screen to your mobile app
++ https://docs.flutter.dev/development/ui/advanced/splash-screen?tab=android-splash-alignment-java-tab
+
+
+
+Not working with launch_background.xml
+
+- Solution: Also make changes in drawable-v21/launch_background.xml. This will be used for API level 21 or higher. **(Solved)**
+

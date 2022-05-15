@@ -21,6 +21,8 @@ import 'firebase_options.dart';
 import 'authentication.dart';
 import 'widgets.dart';
 
+
+import 'splash.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -50,7 +52,8 @@ class MyApp extends StatelessWidget {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       theme: CustomTheme.lightTheme,
-      home: const LoginPage(), // home:   MyHomePage(),
+      // home: const LoginPage(), // home:   MyHomePage(),
+      home: const Splash(), // home:   MyHomePage(),
       routes: {
         '/home_page': (BuildContext context) =>
             const MyHomePage(title: 'HomePage'),
