@@ -17,11 +17,22 @@ class DrawerPage extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-           DrawerHeader(
+          DrawerHeader(
             decoration: const BoxDecoration(
               color: Colors.white70,
             ),
-            child: Text('Email: $email'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.account_circle_rounded, size: 80,),
+                SizedBox(height: 10,),
+                Text(
+                  email,
+                  style: TextStyle(fontSize: 16),
+                ),
+
+              ],
+            ),
           ),
           ListTile(
             title: const Text('Log Out'),
@@ -31,14 +42,14 @@ class DrawerPage extends StatelessWidget {
               // Then close the drawer
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const  LoginPage(),
+                  builder: (context) => const LoginPage(),
                 ),
               );
               // Navigator.pop(context);
             },
           ),
           ListTile(
-            title: const Text('Item 2'),
+            title: const Text('About'),
             onTap: () {
               // Update the state of the app
               // ...
