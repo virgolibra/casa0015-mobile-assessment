@@ -208,3 +208,4 @@ Do not pass parameters to `State` using it's constructor. Only access the parame
 + Fix cannot keep login problem
 + Add Drawer
 + Save draft version May 15
++ Add about page

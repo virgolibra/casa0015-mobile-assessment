@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'login_page.dart';
+import 'about_page.dart';
 import '../authentication.dart';
 
 class DrawerPage extends StatelessWidget {
@@ -24,13 +25,17 @@ class DrawerPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.account_circle_rounded, size: 80,),
-                SizedBox(height: 10,),
+                Icon(
+                  Icons.account_circle_rounded,
+                  size: 80,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
                   email,
                   style: TextStyle(fontSize: 16),
                 ),
-
               ],
             ),
           ),
@@ -51,10 +56,12 @@ class DrawerPage extends StatelessWidget {
           ListTile(
             title: const Text('About'),
             onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
+              // Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const AboutPage(),
+                ),
+              );
             },
           ),
         ],
