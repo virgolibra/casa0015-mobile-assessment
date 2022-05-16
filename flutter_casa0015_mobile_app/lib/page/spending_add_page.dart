@@ -24,12 +24,22 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
     Icons.shopping_cart_rounded, // Shopping
     Icons.directions_bus_rounded, // Transport
     Icons.favorite_rounded, // Personal care
-    Icons.pets_rounded,     // Pets
+    Icons.pets_rounded, // Pets
   ];
 
   List<String> iconsListDescription = [
-    'General','Bills', 'Eating out', 'Delivery', 'Entertainment', 'Gifts', 'Groceries',
-    'Travel', 'Shopping', 'Transport', 'Personal care', 'Pets',
+    'General',
+    'Bills',
+    'Eating out',
+    'Delivery',
+    'Entertainment',
+    'Gifts',
+    'Groceries',
+    'Travel',
+    'Shopping',
+    'Transport',
+    'Personal care',
+    'Pets',
   ];
 
   int buttonOnPressed = 0;
@@ -43,19 +53,80 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
         children: <Widget>[
           // Image.asset('assets/image1.jpg'),
           const SizedBox(height: 8),
-          const IconAndDetail(Icons.account_balance_rounded, 'Money Tracker'),
-          const Divider(
-            height: 8,
-            thickness: 2,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
-          ),
+          const IconAndDetail(Icons.category_rounded, 'Select a category'),
+
+          // Container(
+          //     color: const Color(0xffE09E45),
+          //     child: const IconAndDetail(
+          //         Icons.login_rounded, 'Message Test Page')),
+          // const Header('Discussion'),
+
           Container(
-              color: const Color(0xffE09E45),
-              child: const IconAndDetail(
-                  Icons.login_rounded, 'Message Test Page')),
-          const Header('Discussion'),
+            width: MediaQuery.of(context).size.width * 0.9,
+            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                color: const Color(0xffC9A87C),
+                borderRadius: BorderRadius.circular(18)),
+            child: Column(
+              children: [
+                // Container(
+                //   child: Text(iconsListDescription[buttonOnPressed]),
+                //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                //   decoration: BoxDecoration(
+                //       color: const Color(0xffC9A87C),
+                //       borderRadius: BorderRadius.circular(8)),
+                // ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  iconsListDescription[buttonOnPressed],
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Color(0xffF5E0C3),
+                      fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 120,
+                  padding: EdgeInsets.all(4),
+                  // decoration: BoxDecoration(
+                  //     color: const Color(0xffC9A87C),
+                  //     borderRadius: BorderRadius.circular(10)),
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 50,
+                            childAspectRatio: 1,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5),
+                    itemCount: iconsList.length,
+                    // crossAxisSpacing: 10,
+                    // mainAxisSpacing: 10,
+                    // crossAxisCount: 2,
+                    itemBuilder: (BuildContext context, int index) {
+                      return IconButton(
+                        iconSize: 40,
+                        highlightColor: Colors.red,
+                        // color: const Color(0xff5D4524),
+                        onPressed: () {
+                          setState(() {
+                            buttonOnPressed = index;
+                            // iconDescriptionIndex = index;
+                          });
+                        },
+                        icon: Icon(iconsList[index]),
+                        color: (buttonOnPressed == index)
+                            ? Color(0xff936F3E)
+                            : Color(0xffF5E0C3),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,8 +137,11 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                 //   messages: appState.spendingReportMessages,
                 // ),
                 AddSpendingItem(
-                  addItem: (item, price) =>
-                      appState.addMessageToSpendingReport(item, price, iconsListDescription[buttonOnPressed], buttonOnPressed),
+                  addItem: (item, price) => appState.addMessageToSpendingReport(
+                      item,
+                      price,
+                      iconsListDescription[buttonOnPressed],
+                      buttonOnPressed),
 
                   // messages: appState.spendingReportMessages,
                 ),
@@ -77,7 +151,7 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                   thickness: 2,
                   indent: 8,
                   endIndent: 8,
-                  color: Colors.grey,
+                  color: Color(0xff936F3E),
                 ),
                 // DisplaySpendingItem(
                 //   messages: appState.spendingReportMessages,
@@ -98,49 +172,6 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
               Navigator.pushNamed(context, '/spending_display_page');
               // Navigator.pop(context);
             },
-          ),
-
-          Column(
-            children: [
-              Text(iconsListDescription[buttonOnPressed]),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 120,
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                    color: const Color(0xffC9A87C),
-                    borderRadius: BorderRadius.circular(10)),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 50,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5),
-                  itemCount: iconsList.length,
-                  // crossAxisSpacing: 10,
-                  // mainAxisSpacing: 10,
-                  // crossAxisCount: 2,
-                  itemBuilder: (BuildContext context, int index) {
-                    return IconButton(
-                      iconSize: 40,
-                      highlightColor: Colors.red,
-                      // color: const Color(0xff5D4524),
-                      onPressed: () {
-                        setState(() {
-                          buttonOnPressed = index;
-                          // iconDescriptionIndex = index;
-                        });
-                      },
-                      icon: Icon(iconsList[index]),
-                      color: (buttonOnPressed == index)
-                          ? Color(0xff936F3E)
-                          : Color(0xffF5E0C3),
-                    );
-                  },
-                ),
-              )
-
-            ],
           ),
 
           const Header("CASA0015 Assessment"),

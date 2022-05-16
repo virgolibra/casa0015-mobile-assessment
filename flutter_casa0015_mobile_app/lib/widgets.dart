@@ -60,16 +60,27 @@ class ListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
         child: ListTile(
-          leading: Icon(iconsList[iconIndex]),
+          leading: Icon(iconsList[iconIndex],color: Color(0xff936F3E), size: 35,),
           title: Text(text),
           subtitle: Text(subText),
           tileColor: const Color(0xffF5E0C3),
 
-          trailing: Text(
-            price,
-            style: TextStyle(fontSize: 28),
+          trailing: SizedBox(
+            height: 40,
+            width: 110,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('£'),
+                Text(
+                  price,
+                  style: TextStyle(fontSize: 24),
+                ),
+              ],
+            ),
           ),
 
           // enabled: true,

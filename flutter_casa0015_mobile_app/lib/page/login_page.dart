@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
                   //       appState.addMessageToGuestBook(message),
                   //   messages: appState.guestBookMessages,
                   // ),
-                   StartHome(
+                  StartHome(
                     title: 'TestStartHome',
                     email: appState.email!,
                   ),
@@ -381,66 +381,85 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
           padding: const EdgeInsets.all(8.0),
           child: Form(
             key: _formKey,
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                      width: 200,
-                      child: TextFormField(
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Leave a message',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your message to continue';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 200,
-                      child: TextFormField(
-                        controller: _controller2,
-                        textInputAction: TextInputAction.next,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp("[0-9.]"))
-,                        ],
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
-                        decoration: const InputDecoration(
-                          hintText: 'A fake text Field',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your message to continue';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
+                Container(
+                  child: Text('Item Description'),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffC9A87C),
+                      borderRadius: BorderRadius.circular(8)),
                 ),
-                const SizedBox(width: 8),
-                StyledButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      await widget.addItem(
-                          _controller.text, _controller2.text);
-                      _controller.clear();
-                      _controller2.clear();
-                    }
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.send),
-                      SizedBox(width: 4),
-                      Text('SEND'),
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Add an item description',
+                      hintStyle: TextStyle(fontSize: 15),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter item description to continue';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  width: 200,
+                  child: TextFormField(
+                    controller: _controller2,
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp("[0-9.]")),
                     ],
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixText: '£ ',
+                      labelText: 'Amount',
+                      labelStyle: TextStyle(fontSize: 20),
+                      floatingLabelStyle:
+                          TextStyle(color: Color(0xff936F3E), fontSize: 20),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter the amount';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: 50,
+                  child: StyledButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await widget.addItem(_controller.text, _controller2.text);
+                        _controller.clear();
+                        _controller2.clear();
+                      }
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.add_circle_rounded),
+                        SizedBox(width: 10),
+                        Text('Add an Item',style: TextStyle(fontSize: 20),),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -455,8 +474,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
 }
 
 class DisplaySpendingItem extends StatefulWidget {
-  const DisplaySpendingItem({Key? key, required this.items})
-      : super(key: key);
+  const DisplaySpendingItem({Key? key, required this.items}) : super(key: key);
   final List<SpendingReportMessage> items; // new
   @override
   _DisplaySpendingItemState createState() => _DisplaySpendingItemState();
@@ -472,7 +490,7 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
         // ------MESSAGE display ----------------------------------
 
         SizedBox(
-          height: MediaQuery.of(context).size.height*0.8 ,
+          height: MediaQuery.of(context).size.height * 0.8,
           // height: 600,
           child: ListView.builder(
             padding: const EdgeInsets.all(8),
@@ -908,9 +926,12 @@ class YesNoSelection extends StatelessWidget {
   }
 }
 
-
 class StartHome extends StatefulWidget {
-  const StartHome({Key? key, required this.title, required this.email, }) : super(key: key);
+  const StartHome({
+    Key? key,
+    required this.title,
+    required this.email,
+  }) : super(key: key);
   final String title;
   final String email;
 
@@ -964,7 +985,7 @@ class _StartHomeState extends State<StartHome> {
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
+                  (Set<MaterialState> states) {
                     if (states.contains(MaterialState.pressed)) {
                       return Theme.of(context)
                           .colorScheme
@@ -986,7 +1007,6 @@ class _StartHomeState extends State<StartHome> {
     );
   }
 }
-
 
 // class StartHome extends StatefulWidget {
 //   const StartHome({Key? key, required this.title}) : super(key: key);
