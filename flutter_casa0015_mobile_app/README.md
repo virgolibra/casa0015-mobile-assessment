@@ -289,3 +289,7 @@ https://stackoverflow.com/questions/50632217/converting-timestamp
 
 
 
+Add weather display widget
+
+
+
