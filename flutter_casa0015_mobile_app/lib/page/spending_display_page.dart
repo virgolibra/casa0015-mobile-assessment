@@ -37,7 +37,7 @@ class _SpendingDisplayPageState extends State<SpendingDisplayPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               DisplaySpendingItem(
-                messages: appState.spendingReportMessages,
+                items: appState.spendingReportMessages,
               ),
             ],
           ),

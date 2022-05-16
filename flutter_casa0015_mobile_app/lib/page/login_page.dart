@@ -170,12 +170,16 @@ class LoginPage extends StatelessWidget {
 class SpendingReportMessage {
   SpendingReportMessage({
     required this.name,
-    required this.message,
-    required this.type,
+    required this.price,
+    required this.item,
+    required this.category,
+    required this.iconIndex,
   });
   final String name;
-  final String message;
-  final String type;
+  final String price;
+  final String item;
+  final String category;
+  final int iconIndex;
   // final Timestamp timestamp;
 }
 
@@ -356,8 +360,9 @@ enum Attending { yes, no, unknown }
 // }
 
 class AddSpendingItem extends StatefulWidget {
-  const AddSpendingItem({Key? key, required this.addMessage}) : super(key: key);
-  final FutureOr<void> Function(String message, String type) addMessage;
+  const AddSpendingItem({Key? key, required this.addItem}) : super(key: key);
+  final FutureOr<void> Function(String item, String price) addItem;
+
   @override
   _AddSpendingItemState createState() => _AddSpendingItemState();
 }
@@ -385,6 +390,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                       height: 20,
                       width: 200,
                       child: TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
                         controller: _controller,
                         decoration: const InputDecoration(
                           hintText: 'Leave a message',
@@ -423,7 +429,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                 StyledButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await widget.addMessage(
+                      await widget.addItem(
                           _controller.text, _controller2.text);
                       _controller.clear();
                       _controller2.clear();
@@ -449,9 +455,9 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
 }
 
 class DisplaySpendingItem extends StatefulWidget {
-  const DisplaySpendingItem({Key? key, required this.messages})
+  const DisplaySpendingItem({Key? key, required this.items})
       : super(key: key);
-  final List<SpendingReportMessage> messages; // new
+  final List<SpendingReportMessage> items; // new
   @override
   _DisplaySpendingItemState createState() => _DisplaySpendingItemState();
 }
@@ -470,7 +476,7 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
           // height: 600,
           child: ListView.builder(
             padding: const EdgeInsets.all(8),
-            itemCount: widget.messages.length,
+            itemCount: widget.items.length,
             // shrinkWrap: false,
             // addAutomaticKeepAlives: false,
             // addSemanticIndexes: true,
@@ -478,9 +484,10 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
 
             itemBuilder: (BuildContext context, int index) {
               return ListElement(
-                text: widget.messages[index].name,
-                subText: widget.messages[index].message,
-                price: widget.messages[index].type,
+                iconIndex: widget.items[index].iconIndex,
+                text: widget.items[index].item,
+                subText: widget.items[index].category,
+                price: widget.items[index].price,
               );
             },
             // children: <Widget>[
@@ -497,124 +504,124 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
   }
 }
 
-class SpendingReport extends StatefulWidget {
-  const SpendingReport({required this.addMessage, required this.messages});
-  final FutureOr<void> Function(String message, String type) addMessage;
-  final List<SpendingReportMessage> messages; // new
-
-  @override
-  _SpendingReportState createState() => _SpendingReportState();
-}
-
-class _SpendingReportState extends State<SpendingReport> {
-  final _formKey = GlobalKey<FormState>(debugLabel: '_SpendingReportState');
-  final _controller = TextEditingController();
-  final _controller2 = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: _formKey,
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                      width: 200,
-                      child: TextFormField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Leave a message',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your message to continue';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 200,
-                      child: TextFormField(
-                        controller: _controller2,
-                        decoration: const InputDecoration(
-                          hintText: 'A fake text Field',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your message to continue';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 8),
-                StyledButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      await widget.addMessage(
-                          _controller.text, _controller2.text);
-                      _controller.clear();
-                      _controller2.clear();
-                    }
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.send),
-                      SizedBox(width: 4),
-                      Text('SEND'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        // ------MESSAGE display ----------------------------------
-
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 350,
-          ),
-          child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: widget.messages.length,
-            shrinkWrap: false,
-            // addAutomaticKeepAlives: false,
-            // addSemanticIndexes: true,
-            // semanticChildCount: 3,
-
-            itemBuilder: (BuildContext context, int index) {
-              return ListElement(
-                text: widget.messages[index].name,
-                subText: widget.messages[index].message,
-                price: widget.messages[index].type,
-              );
-            },
-            // children: <Widget>[
-            //   for (var message in widget.messages)
-            //   // Paragraph('${message.name}: ${message.message}: ${message.type}'),
-            //     ListElement(message.name, message.message),
-            // ],
-          ),
-        ),
-
-        const SizedBox(height: 8),
-      ],
-    );
-  }
-}
+// class SpendingReport extends StatefulWidget {
+//   const SpendingReport({required this.addMessage, required this.messages});
+//   final FutureOr<void> Function(String message, String type) addMessage;
+//   final List<SpendingReportMessage> messages; // new
+//
+//   @override
+//   _SpendingReportState createState() => _SpendingReportState();
+// }
+//
+// class _SpendingReportState extends State<SpendingReport> {
+//   final _formKey = GlobalKey<FormState>(debugLabel: '_SpendingReportState');
+//   final _controller = TextEditingController();
+//   final _controller2 = TextEditingController();
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Form(
+//             key: _formKey,
+//             child: Row(
+//               children: [
+//                 Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     SizedBox(
+//                       height: 20,
+//                       width: 200,
+//                       child: TextFormField(
+//                         controller: _controller,
+//                         decoration: const InputDecoration(
+//                           hintText: 'Leave a message',
+//                         ),
+//                         validator: (value) {
+//                           if (value == null || value.isEmpty) {
+//                             return 'Enter your message to continue';
+//                           }
+//                           return null;
+//                         },
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       width: 200,
+//                       child: TextFormField(
+//                         controller: _controller2,
+//                         decoration: const InputDecoration(
+//                           hintText: 'A fake text Field',
+//                         ),
+//                         validator: (value) {
+//                           if (value == null || value.isEmpty) {
+//                             return 'Enter your message to continue';
+//                           }
+//                           return null;
+//                         },
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 const SizedBox(width: 8),
+//                 StyledButton(
+//                   onPressed: () async {
+//                     if (_formKey.currentState!.validate()) {
+//                       await widget.addMessage(
+//                           _controller.text, _controller2.text);
+//                       _controller.clear();
+//                       _controller2.clear();
+//                     }
+//                   },
+//                   child: Row(
+//                     children: const [
+//                       Icon(Icons.send),
+//                       SizedBox(width: 4),
+//                       Text('SEND'),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//         const SizedBox(height: 8),
+//         // ------MESSAGE display ----------------------------------
+//
+//         ConstrainedBox(
+//           constraints: const BoxConstraints(
+//             maxHeight: 350,
+//           ),
+//           child: ListView.builder(
+//             padding: const EdgeInsets.all(8),
+//             itemCount: widget.messages.length,
+//             shrinkWrap: false,
+//             // addAutomaticKeepAlives: false,
+//             // addSemanticIndexes: true,
+//             // semanticChildCount: 3,
+//
+//             itemBuilder: (BuildContext context, int index) {
+//               return ListElement(
+//                 text: widget.messages[index].name,
+//                 subText: widget.messages[index].message,
+//                 price: widget.messages[index].type,
+//               );
+//             },
+//             // children: <Widget>[
+//             //   for (var message in widget.messages)
+//             //   // Paragraph('${message.name}: ${message.message}: ${message.type}'),
+//             //     ListElement(message.name, message.message),
+//             // ],
+//           ),
+//         ),
+//
+//         const SizedBox(height: 8),
+//       ],
+//     );
+//   }
+// }
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -653,8 +660,10 @@ class ApplicationState extends ChangeNotifier {
             _spendingReportMessages.add(
               SpendingReportMessage(
                 name: document.data()['name'] as String,
-                message: document.data()['text'] as String,
-                type: document.data()['type'] as String,
+                price: document.data()['price'] as String,
+                item: document.data()['item'] as String,
+                category: document.data()['category'] as String,
+                iconIndex: document.data()['iconIndex'] as int,
                 // timestamp: document.data()['timestamp'] as Timestamp,
               ),
             );
@@ -805,7 +814,7 @@ class ApplicationState extends ChangeNotifier {
   //   });
   // }
   Future<DocumentReference> addMessageToSpendingReport(
-      String message, String type) {
+      String item, String price, String category, int iconIndex) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -815,8 +824,10 @@ class ApplicationState extends ChangeNotifier {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection(FirebaseAuth.instance.currentUser!.uid)
         .add(<String, dynamic>{
-      'text': message,
-      'type': type,
+      'item': item,
+      'price': price,
+      'category': category,
+      'iconIndex': iconIndex,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,

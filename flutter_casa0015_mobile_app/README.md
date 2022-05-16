@@ -236,6 +236,6 @@ https://blog.51cto.com/928343994/4895430
 
 
 + Choose category
-  + Bills, Eating out, Delivery, Entertainment, Gifts, Groceries, Travel, shopping, transport, personal care, General. 
+  + Bills, Eating out, Delivery, Entertainment, Gifts, Groceries, Travel, shopping, transport, personal care, pets, General. 
 
 https://pub.dev/packages/bottom_bar

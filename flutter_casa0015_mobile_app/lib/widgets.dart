@@ -30,21 +30,39 @@ class Paragraph extends StatelessWidget {
 }
 
 class ListElement extends StatelessWidget {
-  const ListElement(
+  ListElement(
       {Key? key,
       required this.text,
       required this.subText,
-      required this.price})
+      required this.price,
+      required this.iconIndex})
       : super(key: key);
   // const ListElement(this.text, this.subText);
   final String text;
   final String subText;
   final String price;
+  final int iconIndex;
+
+  List<IconData> iconsList = [
+    Icons.widgets_rounded, // General
+    Icons.receipt_rounded, // Bills
+    Icons.restaurant_rounded, // Eating out
+    Icons.delivery_dining_rounded, // Delivery
+    Icons.emoji_emotions_rounded, // Entertainment
+    Icons.card_giftcard_rounded, // Gifts
+    Icons.store_rounded, // Groceries
+    Icons.airplanemode_active_rounded, // Travel
+    Icons.shopping_cart_rounded, // Shopping
+    Icons.directions_bus_rounded, // Transport
+    Icons.favorite_rounded, // Personal care
+    Icons.pets_rounded, // Pets
+  ];
+
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: ListTile(
-          leading: Icon(Icons.account_balance),
+          leading: Icon(iconsList[iconIndex]),
           title: Text(text),
           subtitle: Text(subText),
           tileColor: const Color(0xffF5E0C3),
@@ -63,7 +81,6 @@ class ListElement extends StatelessWidget {
             ),
           ),
           onTap: () {
-
             Navigator.pushNamed(context, '/first_page');
           },
         ),
