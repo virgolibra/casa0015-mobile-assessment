@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_casa0015_mobile_app/formatter.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_base_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -174,12 +175,16 @@ class SpendingReportMessage {
     required this.item,
     required this.category,
     required this.iconIndex,
+    required this.lat,
+    required this.lon,
   });
   final String name;
   final String price;
   final String item;
   final String category;
   final int iconIndex;
+  final double lat;
+  final double lon;
   // final Timestamp timestamp;
 }
 
@@ -420,6 +425,8 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                     textInputAction: TextInputAction.next,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp("[0-9.]")),
+                      LengthLimitingTextInputFormatter(7),
+                      MoneyInputFormatter()
                     ],
                     keyboardType:
                         TextInputType.numberWithOptions(decimal: true),
@@ -506,6 +513,8 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
                 text: widget.items[index].item,
                 subText: widget.items[index].category,
                 price: widget.items[index].price,
+                lat: widget.items[index].lat,
+                lon: widget.items[index].lon,
               );
             },
             // children: <Widget>[
@@ -682,6 +691,8 @@ class ApplicationState extends ChangeNotifier {
                 item: document.data()['item'] as String,
                 category: document.data()['category'] as String,
                 iconIndex: document.data()['iconIndex'] as int,
+                lat: document.data()['lat'] as double,
+                lon: document.data()['lon'] as double,
                 // timestamp: document.data()['timestamp'] as Timestamp,
               ),
             );
@@ -832,7 +843,7 @@ class ApplicationState extends ChangeNotifier {
   //   });
   // }
   Future<DocumentReference> addMessageToSpendingReport(
-      String item, String price, String category, int iconIndex) {
+      String item, String price, String category, int iconIndex, double lat, double lon) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -846,6 +857,8 @@ class ApplicationState extends ChangeNotifier {
       'price': price,
       'category': category,
       'iconIndex': iconIndex,
+      'lat': lat,
+      'lon': lon,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,

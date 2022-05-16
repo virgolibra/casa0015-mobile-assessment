@@ -245,3 +245,6 @@ https://pub.dev/packages/bottom_bar
 
 
 + modify add item page
++ add money input formatter
++ limit input max length = 7
++ add location feature

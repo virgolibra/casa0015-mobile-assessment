@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets.dart';
 import 'login_page.dart';
 import 'drawer_page.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SpendingAddPage extends StatefulWidget {
   const SpendingAddPage({Key? key}) : super(key: key);
@@ -43,7 +46,30 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
   ];
 
   int buttonOnPressed = 0;
-  // int iconDescriptionIndex = 0;
+  double? autoLat, autoLon;
+
+  // int iconDescriptionIndex
+  @override
+  void initState() {
+    super.initState();
+    // ws = new WeatherFactory(key);
+    _getUserLocation();
+  }
+
+  void _getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    log("sdsddssssssssss $position");
+
+    // List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    setState(() {
+      // _userCurrentPosition = LatLng(position.latitude, position.longitude);
+      // print('${placemark[0].name}');
+
+      autoLat = position.latitude;
+      autoLon = position.longitude;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +167,9 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                       item,
                       price,
                       iconsListDescription[buttonOnPressed],
-                      buttonOnPressed),
+                      buttonOnPressed,
+                      autoLat!,
+                      autoLon!),
 
                   // messages: appState.spendingReportMessages,
                 ),
@@ -158,6 +186,15 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                 // ),
               ],
             ),
+          ),
+
+          Text(
+            'Lat: $autoLat',
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            'Lon: $autoLon',
+            style: TextStyle(fontSize: 15),
           ),
           const Divider(
             height: 8,

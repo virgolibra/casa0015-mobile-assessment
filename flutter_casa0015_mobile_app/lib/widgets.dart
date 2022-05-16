@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_casa0015_mobile_app/page/item_detail_page.dart';
 import 'package:path/path.dart';
 
 class Header extends StatelessWidget {
@@ -35,13 +36,15 @@ class ListElement extends StatelessWidget {
       required this.text,
       required this.subText,
       required this.price,
-      required this.iconIndex})
+      required this.iconIndex, required this.lat, required this.lon})
       : super(key: key);
   // const ListElement(this.text, this.subText);
   final String text;
   final String subText;
   final String price;
   final int iconIndex;
+  final double lat;
+  final double lon;
 
   List<IconData> iconsList = [
     Icons.widgets_rounded, // General
@@ -92,7 +95,16 @@ class ListElement extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/first_page');
+            // Navigator.pushNamed(context, '/first_page');
+
+
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ItemDetailPage(lat: lat, lon: lon, item: text,),
+                ),
+              );
+
+
           },
         ),
       );
