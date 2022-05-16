@@ -270,3 +270,16 @@ To be soled: Log in page jump problem
 + add item detailed page
 + Change map display to lite mode
 + Pass relevant arguments to item detailed page
+
+
+
+
+
+**Save Draft V2**
+
+
+
+Update to draft V3
+
+
+

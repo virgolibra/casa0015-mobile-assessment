@@ -131,36 +131,6 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           Text(widget.category),
           Text(widget.iconIndex.toString()),
 
-          // ElevatedButton(
-          //   style: ButtonStyle(
-          //     backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          //           (Set<MaterialState> states) {
-          //         if (states.contains(MaterialState.pressed)) {
-          //           return Theme.of(context)
-          //               .colorScheme
-          //               .primary
-          //               .withOpacity(0.5);
-          //         }
-          //         return null; // Use the component's default.
-          //       },
-          //     ),
-          //   ),
-          //   onPressed: () {
-          //     _getUserLocation();
-          //     mapController.moveCamera( CameraUpdate.newCameraPosition(
-          //         CameraPosition(target: _userCurrentPosition, zoom: 13)
-          //       //17 is new zoom level
-          //     ));
-          //
-          //     setState(() {
-          //       _markers.add( Marker(
-          //           markerId: const MarkerId('SomeId2'),
-          //           position: _userCurrentPosition,
-          //           infoWindow: const InfoWindow(title: 'Magic Location')));
-          //     });
-          //   },
-          //   child: const Text('My location'),
-          // ),
         ],
       ),
     );
