@@ -264,3 +264,9 @@ https://www.jianshu.com/p/aeefd16a68ee
 
 
 To be soled: Log in page jump problem
+
+
+
++ add item detailed page
++ Change map display to lite mode
++ Pass relevant arguments to item detailed page
