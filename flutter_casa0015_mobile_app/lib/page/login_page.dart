@@ -510,8 +510,8 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
             itemBuilder: (BuildContext context, int index) {
               return ListElement(
                 iconIndex: widget.items[index].iconIndex,
-                text: widget.items[index].item,
-                subText: widget.items[index].category,
+                item: widget.items[index].item,
+                category: widget.items[index].category,
                 price: widget.items[index].price,
                 lat: widget.items[index].lat,
                 lon: widget.items[index].lon,
@@ -798,6 +798,8 @@ class ApplicationState extends ChangeNotifier {
         email: email,
         password: password,
       );
+
+
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }

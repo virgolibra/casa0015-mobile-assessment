@@ -248,3 +248,19 @@ https://pub.dev/packages/bottom_bar
 + add money input formatter
 + limit input max length = 7
 + add location feature
+
+
+
+----
+
+Update 16 May 2022
+
+
+
+Flutter page jump
+
+https://www.jianshu.com/p/aeefd16a68ee
+
+
+
+To be soled: Log in page jump problem

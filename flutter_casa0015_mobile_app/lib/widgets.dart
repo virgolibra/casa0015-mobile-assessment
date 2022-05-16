@@ -33,14 +33,16 @@ class Paragraph extends StatelessWidget {
 class ListElement extends StatelessWidget {
   ListElement(
       {Key? key,
-      required this.text,
-      required this.subText,
+      required this.item,
+      required this.category,
       required this.price,
-      required this.iconIndex, required this.lat, required this.lon})
+      required this.iconIndex,
+      required this.lat,
+      required this.lon})
       : super(key: key);
   // const ListElement(this.text, this.subText);
-  final String text;
-  final String subText;
+  final String item;
+  final String category;
   final String price;
   final int iconIndex;
   final double lat;
@@ -65,9 +67,13 @@ class ListElement extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
         child: ListTile(
-          leading: Icon(iconsList[iconIndex],color: Color(0xff936F3E), size: 35,),
-          title: Text(text),
-          subtitle: Text(subText),
+          leading: Icon(
+            iconsList[iconIndex],
+            color: Color(0xff936F3E),
+            size: 35,
+          ),
+          title: Text(item),
+          subtitle: Text(category),
           tileColor: const Color(0xffF5E0C3),
 
           trailing: SizedBox(
@@ -97,14 +103,18 @@ class ListElement extends StatelessWidget {
           onTap: () {
             // Navigator.pushNamed(context, '/first_page');
 
-
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ItemDetailPage(lat: lat, lon: lon, item: text,),
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ItemDetailPage(
+                  lat: lat,
+                  lon: lon,
+                  item: item,
+                  category: category,
+                  iconIndex: iconIndex,
+                  price: price,
                 ),
-              );
-
-
+              ),
+            );
           },
         ),
       );

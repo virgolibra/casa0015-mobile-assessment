@@ -467,11 +467,11 @@ class _PasswordFormState extends State<PasswordForm> {
                               _passwordController.text,
                             );
 
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => SpendingBasePage(email: _emailController.text,),
-                              ),
-                            );
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => SpendingBasePage(email: _emailController.text,),
+                            //   ),
+                            // );
                           }
                         },
                         child: const Text('SIGN IN'),
