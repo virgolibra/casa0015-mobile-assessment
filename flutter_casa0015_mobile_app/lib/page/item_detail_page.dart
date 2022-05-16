@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:developer';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(
@@ -13,7 +15,7 @@ class ItemDetailPage extends StatefulWidget {
       required this.item,
       required this.iconIndex,
       required this.category,
-      required this.price})
+      required this.price, required this.timestamp})
       : super(key: key);
   final double lat;
   final double lon;
@@ -21,6 +23,7 @@ class ItemDetailPage extends StatefulWidget {
   final int iconIndex;
   final String category;
   final String price;
+  final int timestamp;
 
   @override
   _ItemDetailPageState createState() => _ItemDetailPageState();
@@ -53,12 +56,23 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     Icons.pets_rounded, // Pets
   ];
 
-
+  DateTime? dateTime;
+  String? date;
+  String? time;
+  String? weekday;
+  String? formattedDateTime;
 
   @override
   void initState() {
     // TODO: implement initState
     _getAddress();
+    dateTime = DateTime.fromMillisecondsSinceEpoch(widget.timestamp);
+
+    formattedDateTime = DateFormat('E  dd MMMM yyyy  HH:mm:ss').format(dateTime!);
+
+    date = '${dateTime!.day.toString()}/${dateTime!.month.toString()}/${dateTime!.year.toString()}';
+    time = '${dateTime!.hour.toString()}:${dateTime!.minute.toString()}:${dateTime!.second.toString()}';
+    weekday = DateFormat('EEEE').format(dateTime!);
     super.initState();
   }
 
@@ -100,9 +114,9 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.item),
+        title: Text(formattedDateTime!, style: TextStyle(fontSize: 18,),),
       ),
-      backgroundColor: Color(0xffDEC29B),
+      backgroundColor: Color(0xffF5E0C3),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -130,6 +144,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           Text(widget.price),
           Text(widget.category),
           Text(widget.iconIndex.toString()),
+          Text('$time  $date  $weekday'),
+          Text(formattedDateTime!),
 
         ],
       ),

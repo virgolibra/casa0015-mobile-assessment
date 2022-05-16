@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../weather_display.dart';
 import '../widgets.dart';
 
 class SpendingHomePage extends StatefulWidget {
-  const SpendingHomePage({Key? key}) : super(key: key);
-
+  const SpendingHomePage({Key? key, required this.lat, required this.lon}) : super(key: key);
+  final double lat;
+  final double lon;
   @override
   _SpendingHomePageState createState() => _SpendingHomePageState();
 }
 
 class _SpendingHomePageState extends State<SpendingHomePage> {
+
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -37,13 +41,7 @@ class _SpendingHomePageState extends State<SpendingHomePage> {
           endIndent: 8,
           color: Colors.grey,
         ),
-        ElevatedButton(
-          child: const Text('Spending'),
-          onPressed: () {
-            Navigator.pushNamed(context, '/spending_display_page');
-            // Navigator.pop(context);
-          },
-        ),
+        WeatherDisplay(lat: widget.lat, lon: widget.lon,),
         const Header("CASA0015 Assessment"),
         const Paragraph(
           'Mobile application development for casa0015-assessment',

@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_add_page.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_display_page.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_home_page.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_setting_page.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../widgets.dart';
 import 'login_page.dart';
@@ -28,6 +30,30 @@ class _SpendingBasePage extends State<SpendingBasePage> {
   int _currentPage = 0;
   final _pageController = PageController();
 
+  double? autoLat, autoLon;
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+
+  }
+
+  void _getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    log("sdsddssssssssss $position");
+
+    // List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    setState(() {
+      // _userCurrentPosition = LatLng(position.latitude, position.longitude);
+      // print('${placemark[0].name}');
+
+      autoLat = position.latitude;
+      autoLon = position.longitude;
+    });
+
+    // await Future.delayed(Duration(milliseconds: 1000), () {});
+  }
   // Widget build(BuildContext context) {
   @override
   Widget build(BuildContext context) {
@@ -42,7 +68,7 @@ class _SpendingBasePage extends State<SpendingBasePage> {
       body: PageView(
         controller: _pageController,
         children: [
-          SpendingHomePage(),
+          SpendingHomePage(lat: autoLat!, lon: autoLon!,),
           // Container(color: Colors.greenAccent.shade700),
           // Container(color: Colors.orange),
           SpendingAddPage(),

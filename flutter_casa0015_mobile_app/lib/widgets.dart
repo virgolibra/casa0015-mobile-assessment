@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_casa0015_mobile_app/page/item_detail_page.dart';
@@ -38,7 +39,7 @@ class ListElement extends StatelessWidget {
       required this.price,
       required this.iconIndex,
       required this.lat,
-      required this.lon})
+      required this.lon, required this.timestamp})
       : super(key: key);
   // const ListElement(this.text, this.subText);
   final String item;
@@ -47,6 +48,7 @@ class ListElement extends StatelessWidget {
   final int iconIndex;
   final double lat;
   final double lon;
+  final int timestamp;
 
   List<IconData> iconsList = [
     Icons.widgets_rounded, // General
@@ -112,6 +114,7 @@ class ListElement extends StatelessWidget {
                   category: category,
                   iconIndex: iconIndex,
                   price: price,
+                  timestamp: timestamp,
                 ),
               ),
             );

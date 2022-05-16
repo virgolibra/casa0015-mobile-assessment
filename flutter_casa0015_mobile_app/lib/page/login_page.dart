@@ -78,7 +78,7 @@ class LoginPage extends StatelessWidget {
                   // ),
                   StartHome(
                     title: 'TestStartHome',
-                    email: appState.email!,
+                    email: appState.email,
                   ),
                 ],
               ],
@@ -103,6 +103,8 @@ class SpendingReportMessage {
     required this.iconIndex,
     required this.lat,
     required this.lon,
+    required this.timestamp,
+
   });
   final String name;
   final String price;
@@ -111,6 +113,7 @@ class SpendingReportMessage {
   final int iconIndex;
   final double lat;
   final double lon;
+  final int timestamp;
   // final Timestamp timestamp;
 }
 
@@ -268,6 +271,7 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
                 price: widget.items[index].price,
                 lat: widget.items[index].lat,
                 lon: widget.items[index].lon,
+                timestamp: widget.items[index].timestamp,
               );
             },
             // children: <Widget>[
@@ -328,7 +332,7 @@ class ApplicationState extends ChangeNotifier {
                 iconIndex: document.data()['iconIndex'] as int,
                 lat: document.data()['lat'] as double,
                 lon: document.data()['lon'] as double,
-                // timestamp: document.data()['timestamp'] as Timestamp,
+                timestamp: document.data()['timestamp'] as int,
               ),
             );
           }
@@ -567,7 +571,7 @@ class StartHome extends StatefulWidget {
     required this.email,
   }) : super(key: key);
   final String title;
-  final String email;
+  final String? email;
 
   @override
   _StartHomeState createState() => _StartHomeState();
@@ -592,7 +596,7 @@ class _StartHomeState extends State<StartHome> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => SpendingBasePage(email: widget.email),
+                    builder: (context) => SpendingBasePage(email: widget.email!),
                   ),
                 );
               },
