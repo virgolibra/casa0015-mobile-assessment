@@ -169,13 +169,15 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                 //   messages: appState.spendingReportMessages,
                 // ),
                 AddSpendingItem(
-                  addItem: (item, price) => appState.addMessageToSpendingReport(
+                  addItem: (item, price, imageId, isReceiptUpload) => appState.addMessageToSpendingReport(
                       item,
                       price,
                       iconsListDescription[buttonOnPressed],
                       buttonOnPressed,
                       autoLat!,
-                      autoLon!),
+                      autoLon!,
+                  imageId,
+                  isReceiptUpload),
 
                   // messages: appState.spendingReportMessages,
                 ),

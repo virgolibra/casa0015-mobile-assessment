@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,6 +109,9 @@ class SpendingReportMessage {
     required this.lat,
     required this.lon,
     required this.timestamp,
+    required this.imageId,
+    required this.isReceiptUpload,
+
   });
   final String name;
   final String price;
@@ -117,18 +121,17 @@ class SpendingReportMessage {
   final double lat;
   final double lon;
   final int timestamp;
+  final bool isReceiptUpload;
+  final String imageId;
   // final Timestamp timestamp;
 }
 
 enum Attending { yes, no, unknown }
-enum ReceiptStatus {
-  notCaptured,
-  captured,
-}
+
 
 class AddSpendingItem extends StatefulWidget {
   const AddSpendingItem({Key? key, required this.addItem}) : super(key: key);
-  final FutureOr<void> Function(String item, String price) addItem;
+  final FutureOr<void> Function(String item, String price, String imageId, bool isReceiptUpload) addItem;
 
   @override
   _AddSpendingItemState createState() => _AddSpendingItemState();
@@ -144,7 +147,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    imageData = ImageData('noPath', ReceiptStatus.notCaptured);
+    imageData = ImageData('/noPath', false);
   }
 
   @override
@@ -225,7 +228,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                 SizedBox(
                   height: 15,
                 ),
-                imageData.receiptStatus == ReceiptStatus.captured
+                imageData.receiptStatus == true
                     ? SizedBox(
                     height: 100,
                     width: 300,
@@ -274,7 +277,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                       children: [
                         Icon(Icons.camera_alt_rounded),
                         SizedBox(width: 10),
-                        imageData.receiptStatus == ReceiptStatus.captured
+                        imageData.receiptStatus == true
                             ? const Text(
                                 'Re-capture a receipt',
                                 style: TextStyle(fontSize: 16),
@@ -303,10 +306,13 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         await widget.addItem(
-                            _controller.text, _controller2.text);
+                            _controller.text, _controller2.text, imageData.imagePath.substring(imageData.imagePath.lastIndexOf('/')), imageData.receiptStatus);
                         _controller.clear();
                         _controller2.clear();
+                        uploadImage();
                       }
+
+
                     },
                     child: Row(
                       children: const [
@@ -335,7 +341,55 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
       ],
     );
   }
+
+  void uploadImage() {
+    final storage = FirebaseStorage.instance;
+    File file = File(imageData.imagePath);
+
+    final imageName =
+    imageData.imagePath.substring(imageData.imagePath.lastIndexOf('/'));
+
+    // Create the file metadata
+    final metadata = SettableMetadata(contentType: "image/jpeg");
+
+// Create a reference to the Firebase Storage bucket
+    final storageRef = FirebaseStorage.instance.ref();
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+    final uploadTask = storageRef
+        .child(
+        'images/spendingReport/${FirebaseAuth.instance.currentUser?.uid}/$imageName')
+        .putFile(file, metadata);
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+        // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+        // Handle successful uploads on complete
+        // ...
+          break;
+      }
+    });
+  }
+
+
 }
+
+
+
 
 class DisplaySpendingItem extends StatefulWidget {
   const DisplaySpendingItem({Key? key, required this.items}) : super(key: key);
@@ -373,6 +427,8 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
                 lat: widget.items[index].lat,
                 lon: widget.items[index].lon,
                 timestamp: widget.items[index].timestamp,
+                isReceiptUpload: widget.items[index].isReceiptUpload,
+                imageId: widget.items[index].imageId,
               );
             },
             // children: <Widget>[
@@ -433,6 +489,8 @@ class ApplicationState extends ChangeNotifier {
                 lat: document.data()['lat'] as double,
                 lon: document.data()['lon'] as double,
                 timestamp: document.data()['timestamp'] as int,
+                isReceiptUpload: document.data()['isReceiptUpload'] as bool,
+                imageId: document.data()['imageId'] as String,
               ),
             );
           }
@@ -566,7 +624,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<DocumentReference> addMessageToSpendingReport(String item,
-      String price, String category, int iconIndex, double lat, double lon) {
+      String price, String category, int iconIndex, double lat, double lon, String imageId, bool isReceiptUpload) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -585,6 +643,9 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
+
+      'imageId': imageId,
+      'isReceiptUpload': isReceiptUpload,
     });
   }
 

@@ -318,3 +318,7 @@ Upload image and data to Firebase.
 
 
 
+Solved
+
+Upload and display image.
+

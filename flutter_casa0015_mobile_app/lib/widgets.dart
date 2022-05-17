@@ -39,7 +39,10 @@ class ListElement extends StatelessWidget {
       required this.price,
       required this.iconIndex,
       required this.lat,
-      required this.lon, required this.timestamp})
+      required this.lon,
+      required this.timestamp,
+      required this.isReceiptUpload,
+      required this.imageId})
       : super(key: key);
   // const ListElement(this.text, this.subText);
   final String item;
@@ -49,6 +52,8 @@ class ListElement extends StatelessWidget {
   final double lat;
   final double lon;
   final int timestamp;
+  final bool isReceiptUpload;
+  final String imageId;
 
   List<IconData> iconsList = [
     Icons.widgets_rounded, // General
@@ -115,6 +120,8 @@ class ListElement extends StatelessWidget {
                   iconIndex: iconIndex,
                   price: price,
                   timestamp: timestamp,
+                  isReceiptUpload: isReceiptUpload,
+                  imageId: imageId,
                 ),
               ),
             );
@@ -122,7 +129,6 @@ class ListElement extends StatelessWidget {
         ),
       );
 }
-
 
 class IconAndDetail extends StatelessWidget {
   const IconAndDetail(this.icon, this.detail);
@@ -206,4 +212,3 @@ class StyledIconButton2 extends StatelessWidget {
         label: label,
       );
 }
-

@@ -149,9 +149,9 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
 
 class ImageData {
   late String imagePath;
-  late ReceiptStatus receiptStatus;
+  late bool receiptStatus;
 
-  ImageData(String imagePath, ReceiptStatus receiptStatus){
+  ImageData(String imagePath, bool receiptStatus){
     this.imagePath = imagePath;
     this.receiptStatus = receiptStatus;
   }
@@ -180,7 +180,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    imageData = ImageData(widget.imagePath, ReceiptStatus.notCaptured);
+    imageData = ImageData(widget.imagePath, false);
   }
 
   void uploadImage() {
@@ -246,7 +246,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             child: const Text('Continue'),
             onPressed: () {
 
-              imageData.receiptStatus = ReceiptStatus.captured;
+              imageData.receiptStatus = true;
               Navigator.of(context).pop(imageData);
             },
           ),
