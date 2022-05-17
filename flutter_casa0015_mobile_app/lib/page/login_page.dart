@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_casa0015_mobile_app/formatter.dart';
+import 'package:flutter_casa0015_mobile_app/page/add_receipt_page.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_base_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +106,6 @@ class SpendingReportMessage {
     required this.lat,
     required this.lon,
     required this.timestamp,
-
   });
   final String name;
   final String price;
@@ -118,7 +119,6 @@ class SpendingReportMessage {
 }
 
 enum Attending { yes, no, unknown }
-
 
 class AddSpendingItem extends StatefulWidget {
   const AddSpendingItem({Key? key, required this.addItem}) : super(key: key);
@@ -170,7 +170,6 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                     },
                   ),
                 ),
-
                 SizedBox(
                   height: 15,
                 ),
@@ -206,21 +205,81 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                   height: 15,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.85,
                   height: 50,
                   child: StyledButton(
                     onPressed: () async {
+                      try {
+                        WidgetsFlutterBinding.ensureInitialized();
+                        // Obtain a list of the available cameras on the device.
+                        final cameras = await availableCameras();
+                        // Get a specific camera from the list of available cameras.
+                        final firstCamera = cameras.first;
+
+                        await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddReceiptPage(
+                              camera: firstCamera,
+                            ),
+                          ),
+                        );
+                      } catch (e) {
+                        print(e);
+                      }
+
                       if (_formKey.currentState!.validate()) {
-                        await widget.addItem(_controller.text, _controller2.text);
+                        await widget.addItem(
+                            _controller.text, _controller2.text);
+                        _controller.clear();
+                        _controller2.clear();
+                      }
+
+
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.camera_alt_rounded),
+                        SizedBox(width: 10),
+                        Text(
+                          'Add a receipt',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  height: 50,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      side: BorderSide(width: 3, color: Color(0xffB28E5E)),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await widget.addItem(
+                            _controller.text, _controller2.text);
                         _controller.clear();
                         _controller2.clear();
                       }
                     },
                     child: Row(
                       children: const [
-                        Icon(Icons.add_circle_rounded),
+                        Icon(
+                          Icons.add_circle_rounded,
+                          color: Color(0xffB28E5E),
+                        ),
                         SizedBox(width: 10),
-                        Text('Add an Item',style: TextStyle(fontSize: 20),),
+                        Text(
+                          'Add an Item',
+                          style:
+                              TextStyle(fontSize: 16, color: Color(0xffB28E5E), fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                   ),
@@ -287,7 +346,6 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
     );
   }
 }
-
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -437,8 +495,6 @@ class ApplicationState extends ChangeNotifier {
         email: email,
         password: password,
       );
-
-
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }
@@ -467,8 +523,8 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
-  Future<DocumentReference> addMessageToSpendingReport(
-      String item, String price, String category, int iconIndex, double lat, double lon) {
+  Future<DocumentReference> addMessageToSpendingReport(String item,
+      String price, String category, int iconIndex, double lat, double lon) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -593,12 +649,16 @@ class _StartHomeState extends State<StartHome> {
             height: 50,
             child: ElevatedButton(
               child: const Text('MSG Test'),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SpendingBasePage(email: widget.email!),
-                  ),
-                );
+               onPressed: ()  {
+                if( widget.email != null){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SpendingBasePage(email: widget.email!),
+                    ),
+                  );
+                }
+
+
               },
 
               // onPressed: () async {
@@ -645,4 +705,3 @@ class _StartHomeState extends State<StartHome> {
     );
   }
 }
-

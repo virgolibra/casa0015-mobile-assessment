@@ -18,9 +18,10 @@ import '../authentication.dart';
 import 'drawer_page.dart';
 import 'package:bottom_bar/bottom_bar.dart';
 
+
 class SpendingBasePage extends StatefulWidget {
   const SpendingBasePage({Key? key, required this.email}) : super(key: key);
-  final String email;
+  final String? email;
 
   @override
   State<SpendingBasePage> createState() => _SpendingBasePage();
@@ -63,7 +64,7 @@ class _SpendingBasePage extends State<SpendingBasePage> {
         title: const Text('Money Tracker'),
       ),
       drawer: DrawerPage(
-        email: widget.email,
+        email: widget.email!,
       ),
       body: PageView(
         controller: _pageController,
@@ -73,7 +74,7 @@ class _SpendingBasePage extends State<SpendingBasePage> {
           // Container(color: Colors.orange),
           SpendingAddPage(),
           SpendingDisplayPage(),
-          SpendingSettingPage(email: widget.email),
+          SpendingSettingPage(email: widget.email!),
         ],
         onPageChanged: (index) {
           // Use a better state management solution
