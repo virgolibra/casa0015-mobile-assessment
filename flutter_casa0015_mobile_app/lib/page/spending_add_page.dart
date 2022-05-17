@@ -78,9 +78,15 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
       child: ListView(
         children: <Widget>[
           // Image.asset('assets/image1.jpg'),
-          const SizedBox(height: 8),
-          const IconAndDetail(Icons.category_rounded, 'Select a category'),
-
+          const SizedBox(height: 4),
+          // const IconAndDetail(Icons.category_rounded, 'Select a category'),
+          Container(
+            child: Text('Select a category'),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                color: const Color(0xffC9A87C),
+                borderRadius: BorderRadius.circular(8)),
+          ),
           // Container(
           //     color: const Color(0xffE09E45),
           //     child: const IconAndDetail(
@@ -187,34 +193,34 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
               ],
             ),
           ),
-
-          Text(
-            'Lat: $autoLat',
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Lon: $autoLon',
-            style: TextStyle(fontSize: 15),
-          ),
-          const Divider(
-            height: 8,
-            thickness: 2,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
-          ),
-          ElevatedButton(
-            child: const Text('Spending'),
-            onPressed: () {
-              Navigator.pushNamed(context, '/spending_display_page');
-              // Navigator.pop(context);
-            },
-          ),
-
-          const Header("CASA0015 Assessment"),
-          const Paragraph(
-            'Mobile application development for casa0015-assessment',
-          ),
+          //
+          // Text(
+          //   'Lat: $autoLat',
+          //   style: TextStyle(fontSize: 15),
+          // ),
+          // Text(
+          //   'Lon: $autoLon',
+          //   style: TextStyle(fontSize: 15),
+          // ),
+          // const Divider(
+          //   height: 8,
+          //   thickness: 2,
+          //   indent: 8,
+          //   endIndent: 8,
+          //   color: Colors.grey,
+          // ),
+          // ElevatedButton(
+          //   child: const Text('Spending'),
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, '/spending_display_page');
+          //     // Navigator.pop(context);
+          //   },
+          // ),
+          //
+          // const Header("CASA0015 Assessment"),
+          // const Paragraph(
+          //   'Mobile application development for casa0015-assessment',
+          // ),
         ],
       ),
     );

@@ -299,3 +299,22 @@ Add weather display widget
 
 
 page jump and value return https://blog.csdn.net/yuzhiqiang_1993/article/details/89090742
+
+
+
+
+
+---
+
+Update 17 May 2022
+
+
+
++ Solve receipt capture and image return
+
+To be solved:
+
+Upload image and data to Firebase.
+
+
+

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -119,6 +121,10 @@ class SpendingReportMessage {
 }
 
 enum Attending { yes, no, unknown }
+enum ReceiptStatus {
+  notCaptured,
+  captured,
+}
 
 class AddSpendingItem extends StatefulWidget {
   const AddSpendingItem({Key? key, required this.addItem}) : super(key: key);
@@ -132,6 +138,14 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_AddSpendingItemState');
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
+
+  late ImageData imageData;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    imageData = ImageData('noPath', ReceiptStatus.notCaptured);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +185,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 SizedBox(
                   width: 200,
@@ -201,6 +215,22 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                     },
                   ),
                 ),
+                const Divider(
+                  height: 8,
+                  thickness: 2,
+                  indent: 8,
+                  endIndent: 8,
+                  color: Color(0xff936F3E),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                imageData.receiptStatus == ReceiptStatus.captured
+                    ? SizedBox(
+                    height: 100,
+                    width: 300,
+                    child: Image.file(File(imageData.imagePath)))
+                    : Text("Click to Add a receipt"),
                 SizedBox(
                   height: 15,
                 ),
@@ -216,34 +246,43 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                         // Get a specific camera from the list of available cameras.
                         final firstCamera = cameras.first;
 
-                        await Navigator.of(context).push(
+                        // imageData.receiptStatus = ReceiptStatus.notCaptured;
+
+                        await Navigator.of(context)
+                            .push(
                           MaterialPageRoute(
                             builder: (context) => AddReceiptPage(
                               camera: firstCamera,
                             ),
                           ),
-                        );
+                        )
+                            .then((value) {
+                          print(value);
+                          imageData = value;
+                          print(imageData.imagePath);
+                          print(imageData.receiptStatus);
+
+                          setState(() {});
+                          // print(value[0].toString());
+                          // print(value[1].toString());
+                        });
                       } catch (e) {
                         print(e);
                       }
-
-                      if (_formKey.currentState!.validate()) {
-                        await widget.addItem(
-                            _controller.text, _controller2.text);
-                        _controller.clear();
-                        _controller2.clear();
-                      }
-
-
                     },
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(Icons.camera_alt_rounded),
                         SizedBox(width: 10),
-                        Text(
-                          'Add a receipt',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        imageData.receiptStatus == ReceiptStatus.captured
+                            ? const Text(
+                                'Re-capture a receipt',
+                                style: TextStyle(fontSize: 16),
+                              )
+                            : const Text(
+                                'Add a receipt',
+                                style: TextStyle(fontSize: 16),
+                              ),
                       ],
                     ),
                   ),
@@ -251,6 +290,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                 SizedBox(
                   height: 10,
                 ),
+
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,
                   height: 50,
@@ -277,8 +317,10 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                         SizedBox(width: 10),
                         Text(
                           'Add an Item',
-                          style:
-                              TextStyle(fontSize: 16, color: Color(0xffB28E5E), fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xffB28E5E),
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -649,16 +691,15 @@ class _StartHomeState extends State<StartHome> {
             height: 50,
             child: ElevatedButton(
               child: const Text('MSG Test'),
-               onPressed: ()  {
-                if( widget.email != null){
+              onPressed: () {
+                if (widget.email != null) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => SpendingBasePage(email: widget.email!),
+                      builder: (context) =>
+                          SpendingBasePage(email: widget.email!),
                     ),
                   );
                 }
-
-
               },
 
               // onPressed: () async {
