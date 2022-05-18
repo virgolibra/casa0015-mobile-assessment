@@ -346,3 +346,7 @@ Finish UI optimise for all pages.
 Update 18 May 2022
 
 Display date and time in Item list.
+
+
+
+Add item remove feature.

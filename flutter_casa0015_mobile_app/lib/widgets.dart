@@ -35,6 +35,7 @@ class Paragraph extends StatelessWidget {
 class ListElement extends StatefulWidget {
   ListElement(
       {Key? key,
+        required this.id,
       required this.item,
       required this.category,
       required this.price,
@@ -46,6 +47,7 @@ class ListElement extends StatefulWidget {
       required this.imageId})
       : super(key: key);
   // const ListElement(this.text, this.subText);
+  final String id;
   final String item;
   final String category;
   final String price;
@@ -142,6 +144,7 @@ class _ListElementState extends State<ListElement> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ItemDetailPage(
+                  id: widget.id,
                   lat: widget.lat,
                   lon: widget.lon,
                   item: widget.item,
@@ -154,6 +157,7 @@ class _ListElementState extends State<ListElement> {
                 ),
               ),
             );
+
           },
         ),
       );

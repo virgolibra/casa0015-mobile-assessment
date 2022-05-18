@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -78,6 +79,7 @@ class LoginPage extends StatelessWidget {
 
 class SpendingReportMessage {
   SpendingReportMessage({
+    required this.id,
     required this.name,
     required this.price,
     required this.item,
@@ -89,6 +91,7 @@ class SpendingReportMessage {
     required this.imageId,
     required this.isReceiptUpload,
   });
+  final String id;
   final String name;
   final String price;
   final String item;
@@ -223,7 +226,8 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)),
-                        side: const BorderSide(width: 3, color: const Color(0xffF5E0C3)),
+                        side: const BorderSide(
+                            width: 3, color: const Color(0xffF5E0C3)),
                       ),
                       onPressed: () async {
                         try {
@@ -349,7 +353,10 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
           content: const Text("Item is added to Money Tracker"),
           actions: <Widget>[
             TextButton(
-              child: const Text("OK", style: TextStyle(color: Color(0xff6D42CE)),),
+              child: const Text(
+                "OK",
+                style: TextStyle(color: Color(0xff6D42CE)),
+              ),
               onPressed: () => Navigator.of(context).pop(),
             ),
             // TextButton(
@@ -416,6 +423,16 @@ class DisplaySpendingItem extends StatefulWidget {
 }
 
 class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
+  double totolAmount = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    for (int i = 0; i < widget.items.length; i++) {
+      totolAmount += double.parse(widget.items[i].price);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -424,9 +441,25 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
         // const SizedBox(height: 8),
         // ------MESSAGE display ----------------------------------
 
+        // Container(
+        //     color: Color(0xffE09E45),
+        //     height: 50,
+        //     child: Row(
+        //       // mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           '   Total Amount: £${totolAmount.toString()}',
+        //           style: TextStyle(
+        //               color: Color(0xffF5E0C3),
+        //               fontSize: 20,
+        //               fontWeight: FontWeight.w700),
+        //         ),
+        //       ],
+        //     )),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.8,
           // height: 600,
+
           child: ListView.builder(
             padding: const EdgeInsets.all(4),
             itemCount: widget.items.length,
@@ -437,6 +470,7 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
 
             itemBuilder: (BuildContext context, int index) {
               return ListElement(
+                id: widget.items[index].id,
                 iconIndex: widget.items[index].iconIndex,
                 item: widget.items[index].item,
                 category: widget.items[index].category,
@@ -448,6 +482,7 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
                 imageId: widget.items[index].imageId,
               );
             },
+
             // children: <Widget>[
             //   for (var message in widget.messages)
             //   // Paragraph('${message.name}: ${message.message}: ${message.type}'),
@@ -498,6 +533,7 @@ class ApplicationState extends ChangeNotifier {
           for (final document in snapshot.docs) {
             _spendingReportMessages.add(
               SpendingReportMessage(
+                id: document.id,
                 name: document.data()['name'] as String,
                 price: document.data()['price'] as String,
                 item: document.data()['item'] as String,
@@ -671,8 +707,45 @@ class ApplicationState extends ChangeNotifier {
       'isReceiptUpload': isReceiptUpload,
     });
   }
-
-  
+  //
+  // Future<DocumentReference> deleteMessageToSpendingReport(
+  //     String item,
+  //     int timestamp) {
+  //   if (_loginState != ApplicationLoginState.loggedIn) {
+  //     throw Exception('Must be logged in');
+  //   }
+  //
+  //
+  //
+  //
+  //   FirebaseFirestore.instance
+  //       .collection('SpendingReport')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .collection(FirebaseAuth.instance.currentUser!.uid)
+  //   .doc(d)
+  //   .where('timestamp', isEqualTo: timestamp).
+  //
+  //
+  //   return FirebaseFirestore.instance
+  //       .collection('SpendingReport')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .collection(FirebaseAuth.instance.currentUser!.uid)
+  //   .where(Firebase.firestore.FieldPath.documentId(), '==', 'fK3ddutEpD2qQqRMXNW5')
+  //
+  //       .add(<String, dynamic>{
+  //     'item': item,
+  //     'price': price,
+  //     'category': category,
+  //     'iconIndex': iconIndex,
+  //     'lat': lat,
+  //     'lon': lon,
+  //     'timestamp': DateTime.now().millisecondsSinceEpoch,
+  //     'name': FirebaseAuth.instance.currentUser!.displayName,
+  //     'userId': FirebaseAuth.instance.currentUser!.uid,
+  //     'imageId': imageId,
+  //     'isReceiptUpload': isReceiptUpload,
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -784,8 +857,10 @@ class _StartHomeState extends State<StartHome> {
                 style: TextStyle(fontSize: 22),
               ),
               icon: const Icon(Icons.account_balance_rounded),
-              onPressed: () {
+              onPressed: () async {
                 if (widget.email != null) {
+
+                  // await Future.delayed(Duration(milliseconds: 1000), () {});
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) =>

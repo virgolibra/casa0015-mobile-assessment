@@ -19,6 +19,7 @@ enum AppState { NOT_DOWNLOADED, DOWNLOADING, FINISHED_DOWNLOADING }
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(
       {Key? key,
+      required this.id,
       required this.lat,
       required this.lon,
       required this.item,
@@ -29,6 +30,7 @@ class ItemDetailPage extends StatefulWidget {
       required this.isReceiptUpload,
       required this.imageId})
       : super(key: key);
+  final String id;
   final double lat;
   final double lon;
   final String item;
@@ -161,8 +163,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     return Column(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height*0.6 ,
-          width:  MediaQuery.of(context).size.width * 0.95,
+          height: MediaQuery.of(context).size.height * 0.6,
+          width: MediaQuery.of(context).size.width * 0.95,
           child: Image(image: NetworkImage(imageUrl!)),
         ),
       ],
@@ -203,6 +205,56 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           ? contentDownloading()
           : contentNotDownloaded();
 
+  Future<void> deleteMessageToSpendingReport() {
+    return FirebaseFirestore.instance
+        .collection('SpendingReport')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection(FirebaseAuth.instance.currentUser!.uid)
+        .doc(widget.id)
+        .delete();
+  }
+
+  Future<bool?> showAddItemDoneDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Press Yes to remove this item."),
+          content: const Text("Item will be permanently deleted.",style: TextStyle(color: Colors.red,fontSize: 15),),
+
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "No",
+                style: TextStyle(color: Colors.black87,fontSize: 20),
+              ),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+
+            TextButton(
+              child: const Text(
+                "Yes",
+                style: TextStyle(color: Colors.red,fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+                setState(() {
+
+                });
+              },
+            ),
+            // TextButton(
+            //   child: Text("delete"),
+            //   onPressed: () {
+            //     Navigator.of(context).pop(true);
+            //   },
+            // ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _markers.add(Marker(
@@ -238,7 +290,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 // physics: NeverScrollableScrollPhysics(),
                 children: <Widget>[
                   SizedBox(
-                    height: 10,
+                    height: 1,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -298,7 +350,6 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     color: Colors.black87,
                   ),
 
-
                   Row(
                     children: [
                       SizedBox(
@@ -341,12 +392,13 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         SizedBox(
                           height: 30,
                           child: ListTile(
-                            leading: const Icon(Icons.drive_file_rename_outline_rounded),
+                            leading: const Icon(
+                                Icons.drive_file_rename_outline_rounded),
                             minLeadingWidth: 2,
                             title: const Text('Item'),
                             selected: false,
                             trailing: Text(
-                                widget.item,
+                              widget.item,
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
@@ -354,7 +406,9 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         SizedBox(
                           height: 30,
                           child: ListTile(
-                            leading: const Icon(Icons.category_rounded,),
+                            leading: const Icon(
+                              Icons.category_rounded,
+                            ),
                             minLeadingWidth: 2,
                             title: const Text('Category'),
                             selected: false,
@@ -418,6 +472,59 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                           'No receipt upload',
                           style: TextStyle(fontSize: 16),
                         ),
+                  const Divider(
+                    height: 8,
+                    thickness: 2,
+                    indent: 0,
+                    endIndent: 0,
+                    color: Colors.black87,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: Color(0xffE09E45),
+                          side: const BorderSide(
+                              color: Color(0xffE09E45), width: 4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                          textStyle: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold)),
+                      onPressed: () async {
+                        // await showAddItemDoneDialog();
+
+                        var isTrue = await showAddItemDoneDialog();
+                        if (isTrue!) {
+                          deleteMessageToSpendingReport();
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Icons.remove_circle_outline_rounded,
+                            color: Color(0xffF5E0C3),
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            'Remove Item',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xffF5E0C3),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                 ],
               ),
             ),
