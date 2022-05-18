@@ -17,9 +17,19 @@ The image used in this assessment are created by myself.
 
 ## UI design
 
-```
-<img src="images/Screenshot_20220518-154545.png" width=70% height=70%>
-```
+
+<img src="images/Screenshot_20220518-154545.png" width=30% height=30%>
+<img src="images/Screenshot_20220518-154553.png" width=30% height=30%>
+<img src="images/Screenshot_20220518-154600.png" width=30% height=30%>
+<img src="images/Screenshot_20220518-154612.png" width=30% height=30%>
+<img src="images/Screenshot_20220518-154623.png" width=30% height=30%>
+<img src="images/Screenshot_20220518-154627.png" width=30% height=30%>
+
+
+
+
+
+
 
 
 
