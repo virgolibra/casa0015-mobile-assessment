@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_casa0015_mobile_app/page/item_detail_page.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 
 class Header extends StatelessWidget {
@@ -31,7 +32,7 @@ class Paragraph extends StatelessWidget {
       );
 }
 
-class ListElement extends StatelessWidget {
+class ListElement extends StatefulWidget {
   ListElement(
       {Key? key,
       required this.item,
@@ -55,6 +56,11 @@ class ListElement extends StatelessWidget {
   final bool isReceiptUpload;
   final String imageId;
 
+  @override
+  State<ListElement> createState() => _ListElementState();
+}
+
+class _ListElementState extends State<ListElement> {
   List<IconData> iconsList = [
     Icons.widgets_rounded, // General
     Icons.receipt_rounded, // Bills
@@ -70,17 +76,40 @@ class ListElement extends StatelessWidget {
     Icons.pets_rounded, // Pets
   ];
 
+  DateTime? dateTime;
+  String? date;
+  String? time;
+  String? weekday;
+  String? formattedDateTime;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    dateTime = DateTime.fromMillisecondsSinceEpoch(widget.timestamp);
+    formattedDateTime =
+        DateFormat('HH:mm:ss dd/MM/yy').format(dateTime!);
+    date =
+        '${dateTime!.day.toString()} ${DateFormat('MMMM').format(dateTime!)} ${dateTime!.year.toString()}';
+    time =
+        '${dateTime!.hour.toString()}:${dateTime!.minute.toString()}:${dateTime!.second.toString()}';
+    weekday = DateFormat('EEEE').format(dateTime!);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
         child: ListTile(
           leading: Icon(
-            iconsList[iconIndex],
+            iconsList[widget.iconIndex],
             color: Color(0xff936F3E),
             size: 35,
           ),
-          title: Text(item),
-          subtitle: Text(category),
+          title: Text(widget.item),
+          subtitle: Text(formattedDateTime!),
+          // subtitle: Text(widget.category),
           tileColor: const Color(0xffDEC29B),
 
           trailing: SizedBox(
@@ -92,7 +121,7 @@ class ListElement extends StatelessWidget {
               children: [
                 Text('£'),
                 Text(
-                  price,
+                  widget.price,
                   style: TextStyle(fontSize: 24),
                 ),
               ],
@@ -113,15 +142,15 @@ class ListElement extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ItemDetailPage(
-                  lat: lat,
-                  lon: lon,
-                  item: item,
-                  category: category,
-                  iconIndex: iconIndex,
-                  price: price,
-                  timestamp: timestamp,
-                  isReceiptUpload: isReceiptUpload,
-                  imageId: imageId,
+                  lat: widget.lat,
+                  lon: widget.lon,
+                  item: widget.item,
+                  category: widget.category,
+                  iconIndex: widget.iconIndex,
+                  price: widget.price,
+                  timestamp: widget.timestamp,
+                  isReceiptUpload: widget.isReceiptUpload,
+                  imageId: widget.imageId,
                 ),
               ),
             );
@@ -222,14 +251,13 @@ class StyledIconButton3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OutlinedButton.icon(
-    style: OutlinedButton.styleFrom(
-      side: const BorderSide(color: Color(0xff6D42CE),width: 4),
-      backgroundColor: const Color(0xffF5E0C3),
-      textStyle: const TextStyle(fontSize: 15),
-    ),
-    onPressed: onPressed,
-    icon: icon,
-    label: label,
-  );
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: Color(0xff6D42CE), width: 4),
+          backgroundColor: const Color(0xffF5E0C3),
+          textStyle: const TextStyle(fontSize: 15),
+        ),
+        onPressed: onPressed,
+        icon: icon,
+        label: label,
+      );
 }
-

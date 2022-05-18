@@ -428,7 +428,7 @@ class _DisplaySpendingItemState extends State<DisplaySpendingItem> {
           height: MediaQuery.of(context).size.height * 0.8,
           // height: 600,
           child: ListView.builder(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(4),
             itemCount: widget.items.length,
             // shrinkWrap: false,
             // addAutomaticKeepAlives: false,
@@ -671,6 +671,8 @@ class ApplicationState extends ChangeNotifier {
       'isReceiptUpload': isReceiptUpload,
     });
   }
+
+  
 
   @override
   void dispose() {

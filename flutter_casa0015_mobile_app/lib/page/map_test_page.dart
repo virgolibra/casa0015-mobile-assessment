@@ -55,6 +55,7 @@ class _MapTestPageState extends State<MapTestPage> {
 
   _onCameraMove(CameraPosition position) {
     _lastMapPosition = position.target;
+    // log(_lastMapPosition.toString());
   }
 
   _onAddMarkerButtonPressed() {
@@ -104,6 +105,7 @@ class _MapTestPageState extends State<MapTestPage> {
             myLocationEnabled: true,
             compassEnabled: true,
             myLocationButtonEnabled: false,
+
 
           ),
           Align(
