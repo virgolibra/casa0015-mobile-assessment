@@ -45,11 +45,13 @@ class DrawerPage extends StatelessWidget {
               // Update the state of the app
               // ...
               // Then close the drawer
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
-              );
+              Navigator.pop(context);
+              Navigator.of(context).pushNamedAndRemoveUntil('/login_page', ModalRoute.withName('login_page'));
+              // Navigator.of(context).pop(
+              //   MaterialPageRoute(
+              //     builder: (context) => const LoginPage(),
+              //   ),
+              // );
               // Navigator.pop(context);
             },
           ),

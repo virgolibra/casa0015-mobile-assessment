@@ -322,3 +322,13 @@ Solved
 
 Upload and display image.
 
+
+
+
+
++ Flutter achieve logout
++ ```Navigator.of(context).pushNamedAndRemoveUntil('/login_page', ModalRoute.withName('login_page'));```
+
+
+
+Finish UI optimise for login page

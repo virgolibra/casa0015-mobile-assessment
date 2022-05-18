@@ -26,14 +26,18 @@ class _SplashState extends State<Splash> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             Container(
-              height: 100,
-              width: 100,
-              color: Colors.white70,
+              height: 30,
+              width: 250,
+              decoration: BoxDecoration(
+                  color: const Color(0xffC9A87C),
+                  borderRadius: BorderRadius.circular(10)),
+
             ),
             Container(
               child: Text(
-                "Splash Screen",
+                "Loading...",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),

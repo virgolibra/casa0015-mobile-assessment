@@ -31,56 +31,36 @@ class LoginPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Image.asset('assets/image1.jpg'),
+          Image.asset('assets/title.png'),
           const SizedBox(height: 8),
-          const IconAndDetail(Icons.account_balance_rounded, 'Money Tracker'),
-          const Divider(
-            height: 8,
-            thickness: 2,
-            indent: 8,
-            endIndent: 8,
-            color: Colors.grey,
+          const IconAndDetail(Icons.account_balance_rounded, 'Login Page'),
+          SizedBox(
+            height: 20,
           ),
-          const IconAndDetail(
-              Icons.login_rounded, 'Log in to access Money Tracker'),
-          Consumer<ApplicationState>(
-            builder: (context, appState, _) => Authentication(
-              email: appState.email,
-              loginState: appState.loginState,
-              startLoginFlow: appState.startLoginFlow,
-              endLoginFlow: appState.endLoginFlow,
-              verifyEmail: appState.verifyEmail,
-              signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
-              cancelRegistration: appState.cancelRegistration,
-              registerAccount: appState.registerAccount,
-              signOut: appState.signOut,
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+                color: const Color(0xffE09E45),
+                borderRadius: BorderRadius.circular(18)),
+            child: Consumer<ApplicationState>(
+              builder: (context, appState, _) => Authentication(
+                email: appState.email,
+                loginState: appState.loginState,
+                startLoginFlow: appState.startLoginFlow,
+                endLoginFlow: appState.endLoginFlow,
+                verifyEmail: appState.verifyEmail,
+                signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
+                cancelRegistration: appState.cancelRegistration,
+                registerAccount: appState.registerAccount,
+                signOut: appState.signOut,
+              ),
             ),
           ),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Add from here
-                // if (appState.attendees >= 2)
-                //   Paragraph('${appState.attendees} people going')
-                // else if (appState.attendees == 1)
-                //   const Paragraph('1 person going')
-                // else
-                //   const Paragraph('No one going'),
-                // To here.
                 if (appState.loginState == ApplicationLoginState.loggedIn) ...[
-                  // Add from here
-                  // YesNoSelection(
-                  //   state: appState.attending,
-                  //   onSelection: (attending) => appState.attending = attending,
-                  // ),
-                  // To here.
-                  // const Header('Discussion'),
-                  // GuestBook(
-                  //   addMessage: (message) =>
-                  //       appState.addMessageToGuestBook(message),
-                  //   messages: appState.guestBookMessages,
-                  // ),
                   StartHome(
                     title: 'TestStartHome',
                     email: appState.email,
@@ -88,10 +68,6 @@ class LoginPage extends StatelessWidget {
                 ],
               ],
             ),
-          ),
-          const Header("CASA0015 Assessment"),
-          const Paragraph(
-            'Mobile application development for casa0015-assessment',
           ),
         ],
       ),
@@ -111,7 +87,6 @@ class SpendingReportMessage {
     required this.timestamp,
     required this.imageId,
     required this.isReceiptUpload,
-
   });
   final String name;
   final String price;
@@ -128,10 +103,10 @@ class SpendingReportMessage {
 
 enum Attending { yes, no, unknown }
 
-
 class AddSpendingItem extends StatefulWidget {
   const AddSpendingItem({Key? key, required this.addItem}) : super(key: key);
-  final FutureOr<void> Function(String item, String price, String imageId, bool isReceiptUpload) addItem;
+  final FutureOr<void> Function(
+      String item, String price, String imageId, bool isReceiptUpload) addItem;
 
   @override
   _AddSpendingItemState createState() => _AddSpendingItemState();
@@ -230,9 +205,9 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                 ),
                 imageData.receiptStatus == true
                     ? SizedBox(
-                    height: 100,
-                    width: 300,
-                    child: Image.file(File(imageData.imagePath)))
+                        height: 100,
+                        width: 300,
+                        child: Image.file(File(imageData.imagePath)))
                     : Text("Click to Add a receipt"),
                 SizedBox(
                   height: 15,
@@ -293,7 +268,6 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                 SizedBox(
                   height: 10,
                 ),
-
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,
                   height: 50,
@@ -306,13 +280,15 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         await widget.addItem(
-                            _controller.text, _controller2.text, imageData.imagePath.substring(imageData.imagePath.lastIndexOf('/')), imageData.receiptStatus);
+                            _controller.text,
+                            _controller2.text,
+                            imageData.imagePath.substring(
+                                imageData.imagePath.lastIndexOf('/')),
+                            imageData.receiptStatus);
                         _controller.clear();
                         _controller2.clear();
                         uploadImage();
                       }
-
-
                     },
                     child: Row(
                       children: const [
@@ -347,7 +323,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
     File file = File(imageData.imagePath);
 
     final imageName =
-    imageData.imagePath.substring(imageData.imagePath.lastIndexOf('/'));
+        imageData.imagePath.substring(imageData.imagePath.lastIndexOf('/'));
 
     // Create the file metadata
     final metadata = SettableMetadata(contentType: "image/jpeg");
@@ -358,7 +334,7 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
 // Upload file and metadata to the path 'images/mountains.jpg'
     final uploadTask = storageRef
         .child(
-        'images/spendingReport/${FirebaseAuth.instance.currentUser?.uid}/$imageName')
+            'images/spendingReport/${FirebaseAuth.instance.currentUser?.uid}/$imageName')
         .putFile(file, metadata);
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
@@ -375,21 +351,16 @@ class _AddSpendingItemState extends State<AddSpendingItem> {
           print("Upload was canceled");
           break;
         case TaskState.error:
-        // Handle unsuccessful uploads
+          // Handle unsuccessful uploads
           break;
         case TaskState.success:
-        // Handle successful uploads on complete
-        // ...
+          // Handle successful uploads on complete
+          // ...
           break;
       }
     });
   }
-
-
 }
-
-
-
 
 class DisplaySpendingItem extends StatefulWidget {
   const DisplaySpendingItem({Key? key, required this.items}) : super(key: key);
@@ -623,8 +594,15 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
-  Future<DocumentReference> addMessageToSpendingReport(String item,
-      String price, String category, int iconIndex, double lat, double lon, String imageId, bool isReceiptUpload) {
+  Future<DocumentReference> addMessageToSpendingReport(
+      String item,
+      String price,
+      String category,
+      int iconIndex,
+      double lat,
+      double lon,
+      String imageId,
+      bool isReceiptUpload) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -643,7 +621,6 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
-
       'imageId': imageId,
       'isReceiptUpload': isReceiptUpload,
     });
@@ -745,13 +722,18 @@ class _StartHomeState extends State<StartHome> {
       mainAxisAlignment: MainAxisAlignment.center,
       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
+        SizedBox(height: 20,),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: SizedBox(
-            width: 100,
-            height: 50,
-            child: ElevatedButton(
-              child: const Text('MSG Test'),
+            width: 200,
+            height: 100,
+            child: StyledIconButton2(
+              label: const Text(
+                'Main Page',
+                style: TextStyle(fontSize: 22),
+              ),
+              icon: Icon(Icons.account_balance_rounded),
               onPressed: () {
                 if (widget.email != null) {
                   Navigator.of(context).push(
@@ -777,6 +759,7 @@ class _StartHomeState extends State<StartHome> {
             ),
           ),
         ),
+        Text('Click to enter main page'),
         Padding(
           padding: const EdgeInsets.only(top: 18, bottom: 20),
           child: SizedBox(

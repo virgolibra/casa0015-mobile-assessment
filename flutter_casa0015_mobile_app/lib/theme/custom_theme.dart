@@ -11,7 +11,7 @@ class CustomTheme {
         primaryColorLight: const Color(0x1aF5E0C3),
         primaryColorDark: const Color(0xff936F3E),
         canvasColor: const Color(0xffE09E45),
-        scaffoldBackgroundColor: const Color(0xffB5BFD3),
+        scaffoldBackgroundColor: const Color(0xffF5E0C3),
         bottomAppBarColor: const Color(0xff6D42CE),
         cardColor: const Color(0xaaF5E0C3),
         dividerColor: const Color(0x1f6D42CE),

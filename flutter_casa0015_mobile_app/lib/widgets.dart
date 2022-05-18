@@ -159,8 +159,8 @@ class StyledButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OutlinedButton(
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xffB28E5E)),
-          backgroundColor: const Color(0xffB28E5E),
+          side: const BorderSide(color: Color(0xff6D42CE)),
+          backgroundColor: const Color(0xff6D42CE),
           textStyle: const TextStyle(fontSize: 15),
         ),
         onPressed: onPressed,
@@ -179,10 +179,10 @@ class StyledIconButton extends StatelessWidget {
   Widget build(BuildContext context) => OutlinedButton.icon(
         style: OutlinedButton.styleFrom(
           side: const BorderSide(
-            color: Color(0xffB28E5E),
+            color: Color(0xffE09E45),
             width: 2,
           ),
-          backgroundColor: const Color(0xffB5BFD3),
+          backgroundColor: const Color(0xffE09E45),
           textStyle: const TextStyle(
             fontSize: 15,
           ),
@@ -203,12 +203,32 @@ class StyledIconButton2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OutlinedButton.icon(
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xffB28E5E)),
-          backgroundColor: const Color(0xffB28E5E),
+          side: const BorderSide(color: Color(0xff6D42CE)),
+          backgroundColor: const Color(0xff6D42CE),
           textStyle: const TextStyle(fontSize: 15),
         ),
         onPressed: onPressed,
         icon: icon,
         label: label,
       );
+}
+
+class StyledIconButton3 extends StatelessWidget {
+  const StyledIconButton3(
+      {required this.icon, required this.label, required this.onPressed});
+  final Widget icon;
+  final Widget label;
+  final void Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) => OutlinedButton.icon(
+    style: OutlinedButton.styleFrom(
+      side: const BorderSide(color: Color(0xff6D42CE),width: 4),
+      backgroundColor: const Color(0xffF5E0C3),
+      textStyle: const TextStyle(fontSize: 15),
+    ),
+    onPressed: onPressed,
+    icon: icon,
+    label: label,
+  );
 }

@@ -50,29 +50,43 @@ class Authentication extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (loginState) {
       case ApplicationLoginState.loggedOut:
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 0, bottom: 8),
-              child: StyledIconButton2(
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 100),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              StyledIconButton2(
                 onPressed: () {
                   startLoginFlow();
                 },
                 label: const Icon(Icons.login_rounded),
-                icon: const Text('Login'),
+                icon: const Text(
+                  'Sign in',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Sign in with email to Continue',
+                style: TextStyle(fontSize: 18),
+              )
+            ],
+          ),
         );
       case ApplicationLoginState.emailAddress:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24),
+              padding: const EdgeInsets.only(left: 6),
               child: StyledIconButton(
                 onPressed: () => endLoginFlow(),
-                label: const Text('Cancel'),
+                label: const Text(
+                  'Cancel',
+                  style: TextStyle(fontSize: 18),
+                ),
                 icon: const Icon(Icons.keyboard_arrow_left_rounded),
               ),
             ),
@@ -86,7 +100,7 @@ class Authentication extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24),
+              padding: const EdgeInsets.only(left: 6),
               child: StyledIconButton(
                 onPressed: () => endLoginFlow(),
                 label: const Text('Cancel'),
@@ -107,7 +121,7 @@ class Authentication extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24),
+              padding: const EdgeInsets.only(left: 6),
               child: StyledIconButton(
                 onPressed: () => endLoginFlow(),
                 label: const Text('Cancel'),
@@ -135,25 +149,49 @@ class Authentication extends StatelessWidget {
           ],
         );
       case ApplicationLoginState.loggedIn:
-        return Column(
-          children: [
-            Text(
-              'Signed in ($email)',
-              style: const TextStyle(
-                fontSize: 18,
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Current User: ',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    '$email',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Color(0xff6D42CE),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 0, bottom: 8),
-              child: StyledIconButton2(
-                onPressed: () {
-                  signOut();
-                },
-                label: const Text('LOGOUT'),
-                icon: const Icon(Icons.logout_rounded),
+              SizedBox(
+                height: 20,
               ),
-            ),
-          ],
+              const Text(
+                'Click to confirm sign out',
+                style: TextStyle(
+                  fontSize: 17,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 0, bottom: 8),
+                child: StyledIconButton2(
+                  onPressed: () {
+                    signOut();
+                  },
+                  label: const Text('Sign Out'),
+                  icon: const Icon(Icons.logout_rounded),
+                ),
+              ),
+            ],
+          ),
         );
       default:
         return Row(
@@ -228,6 +266,11 @@ class _EmailFormState extends State<EmailForm> {
                   child: TextFormField(
                     controller: _controller,
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                      labelStyle: TextStyle(fontSize: 20),
+                      floatingLabelStyle:
+                          TextStyle(color: Color(0xff936F3E), fontSize: 20),
                       hintText: 'Enter your email',
                     ),
                     validator: (value) {
@@ -288,11 +331,13 @@ class _RegisterFormState extends State<RegisterForm> {
   final _emailController = TextEditingController();
   final _displayNameController = TextEditingController();
   final _passwordController = TextEditingController();
+  late bool _pwdVisible;
 
   @override
   void initState() {
     super.initState();
     _emailController.text = widget.email;
+    _pwdVisible = false;
   }
 
   @override
@@ -341,10 +386,23 @@ class _RegisterFormState extends State<RegisterForm> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: TextFormField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _pwdVisible ? Icons.visibility : Icons.visibility_off,
+                          color: Color(0xffF5E0C3),
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _pwdVisible = !_pwdVisible;
+                          });
+                        },
+                      ),
                     ),
-                    obscureText: true,
+                    obscureText: !_pwdVisible,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter your password';
@@ -403,11 +461,13 @@ class _PasswordFormState extends State<PasswordForm> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_PasswordFormState');
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  late bool _pwdVisible;
 
   @override
   void initState() {
     super.initState();
     _emailController.text = widget.email;
+    _pwdVisible = false;
   }
 
   @override
@@ -441,10 +501,23 @@ class _PasswordFormState extends State<PasswordForm> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: TextFormField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _pwdVisible ? Icons.visibility : Icons.visibility_off,
+                          color: Color(0xffF5E0C3),
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _pwdVisible = !_pwdVisible;
+                          });
+                        },
+                      ),
                     ),
-                    obscureText: true,
+                    obscureText: !_pwdVisible,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter your password';
@@ -474,7 +547,7 @@ class _PasswordFormState extends State<PasswordForm> {
                             // );
                           }
                         },
-                        child: const Text('SIGN IN'),
+                        child: const Text('Sign in'),
                       ),
                       const SizedBox(width: 30),
                     ],
