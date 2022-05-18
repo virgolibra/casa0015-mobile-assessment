@@ -1,13 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_casa0015_mobile_app/theme/custom_theme.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather/weather.dart';
 
 enum AppState { NOT_DOWNLOADED, DOWNLOADING, FINISHED_DOWNLOADING }
 
 class WeatherDisplay extends StatefulWidget {
-  const WeatherDisplay({Key? key, required this.lat, required this.lon}) : super(key: key);
+  const WeatherDisplay({Key? key, required this.lat, required this.lon})
+      : super(key: key);
   final double lat;
   final double lon;
 
@@ -43,12 +45,8 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
     super.initState();
     ws = new WeatherFactory(key);
 
-
     queryWeather();
-
   }
-
-
 
   void queryWeather() async {
     // /// Removes keyboard
@@ -80,33 +78,222 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
   }
 
   Widget contentFinishedDownload() {
-    return Center(
-      child: ListView.separated(
-        itemCount: _data.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_data[index].toString()),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
+    // return Center(
+    //   child: ListView.separated(
+    //     itemCount: _data.length,
+    //     itemBuilder: (context, index) {
+    //       return ListTile(
+    //         title: Text(_data[index].toString()),
+    //       );
+    //     },
+    //     separatorBuilder: (context, index) {
+    //       return Divider();
+    //     },
+    //   ),
+    // );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.4,
+        decoration: BoxDecoration(
+            color: const Color(0xffDEC29B),
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Text(
+                  'Weather',
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w700),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [
+                      Text(
+                        'based on current location',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const Divider(
+              height: 8,
+              thickness: 2,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black87,
+            ),
+            Row(
+              children: [
+                _weatherIconDisplay(),
+                Expanded(
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '$_areaName',
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        '${_temperature?.toStringAsFixed(0)}\u2103',
+                        style: const TextStyle(
+                            fontSize: 45,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      Text(
+                        '$_weatherDescription',
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 120,
+              child: ListView(
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  SizedBox(
+                    height: 30,
+                    child: ListTile(
+                      leading: const Icon(Icons.device_thermostat_rounded),
+                      minLeadingWidth: 2,
+                      title: const Text('Temperature'),
+                      selected: false,
+                      trailing: Text(
+                        '${_tempMin?.toStringAsFixed(0)}\u2103 - ${_tempMax?.toStringAsFixed(0)}\u2103',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: ListTile(
+                      leading: const Icon(Icons.back_hand_rounded),
+                      minLeadingWidth: 2,
+                      title: const Text('Feels Like'),
+                      selected: false,
+                      trailing: Text(
+                        '${_tempFeelsLike?.toStringAsFixed(0)}\u2103',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: ListTile(
+                      leading: const Icon(Icons.water_drop_rounded),
+                      minLeadingWidth: 2,
+                      title: const Text('Humidity'),
+                      selected: false,
+                      trailing: Text(
+                        '$_humidity%',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: ListTile(
+                      leading: const Icon(Icons.cloud_circle_rounded),
+                      minLeadingWidth: 2,
+                      title: const Text('Pressure'),
+                      selected: false,
+                      trailing: Text(
+                        '$_pressure hPa',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Expanded(child: _weatherIconDisplay()),
+          ],
+        ),
       ),
     );
   }
 
   Widget contentDownloading() {
-    return Container(
-      margin: EdgeInsets.all(25),
-      child: Column(children: [
-        Text(
-          'Fetching Weather...',
-          style: TextStyle(fontSize: 20),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.4,
+        decoration: BoxDecoration(
+            color: const Color(0xffDEC29B),
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(
+              height: 10,
+            ),
+            const Text(
+              'Weather',
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w700),
+            ),
+            const Divider(
+              height: 8,
+              thickness: 2,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black87,
+            ),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text(
+                  'Fetching Weather...',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(top: 50),
+                    child: const Center(
+                        child: CircularProgressIndicator(strokeWidth: 10))),
+              ],
+            ),
+
+            // Expanded(child: _weatherIconDisplay()),
+          ],
         ),
-        Container(
-            margin: EdgeInsets.only(top: 50),
-            child: Center(child: CircularProgressIndicator(strokeWidth: 10)))
-      ]),
+      ),
     );
   }
 
@@ -114,7 +301,7 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: const <Widget>[
           Text(
             'Press the button to download the Weather forecast',
           ),
@@ -123,71 +310,22 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
     );
   }
 
-  Widget _resultView() => _state == AppState.FINISHED_DOWNLOADING
+  Widget _weatherView() => _state == AppState.FINISHED_DOWNLOADING
       ? contentFinishedDownload()
       : _state == AppState.DOWNLOADING
           ? contentDownloading()
           : contentNotDownloaded();
 
-
-
-  // Widget _coordinateInputs() {
-  //   return Row(
-  //     children: <Widget>[
-  //       Expanded(
-  //         child: Container(
-  //             margin: EdgeInsets.all(5),
-  //             child: TextField(
-  //                 decoration: InputDecoration(
-  //                     border: OutlineInputBorder(), hintText: 'Enter latitude'),
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: _saveLat,
-  //                 onSubmitted: _saveLat)),
-  //       ),
-  //       Expanded(
-  //           child: Container(
-  //               margin: EdgeInsets.all(5),
-  //               child: TextField(
-  //                   decoration: InputDecoration(
-  //                       border: OutlineInputBorder(),
-  //                       hintText: 'Enter longitude'),
-  //                   keyboardType: TextInputType.number,
-  //                   onChanged: _saveLon,
-  //                   onSubmitted: _saveLon)))
-  //     ],
-  //   );
-  // }
-
-  // Widget _buttons() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: <Widget>[
-  //       Container(
-  //         margin: EdgeInsets.all(5),
-  //         child: TextButton(
-  //           child: Text(
-  //             'Fetch weather',
-  //             style: TextStyle(color: Colors.white),
-  //           ),
-  //           onPressed: queryWeather,
-  //           style: ButtonStyle(
-  //               backgroundColor: MaterialStateProperty.all(Colors.blue)),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget weatherIconNull() {
     return Container(
         margin: EdgeInsets.only(top: 10),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 5)));
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 5)));
   }
 
   Widget weatherIconNotNull() {
     return SizedBox(
-      height: 100,
-      width: 100,
+      height: 120,
+      width: 120,
       child: Image(
           image: NetworkImage(
               'http://openweathermap.org/img/wn/$_weatherIcon@4x.png')),
@@ -199,65 +337,6 @@ class _WeatherDisplayState extends State<WeatherDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.6,
-      child: ListView(
-        children: <Widget>[
-          // _coordinateInputs(),
-          // _buttons(),
-          Text(
-            'Output:',
-            style: TextStyle(fontSize: 20),
-          ),
-          Divider(
-            height: 20.0,
-            thickness: 2.0,
-          ),
-          SizedBox(height: 200,child: _resultView()),
-          Divider(
-            height: 20.0,
-            thickness: 2.0,
-          ),
-          Text(
-            'Lat: ${widget.lat}',
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Lon: ${widget.lon}',
-            style: TextStyle(fontSize: 15),
-          ),
-          Divider(
-            height: 20.0,
-            thickness: 2.0,
-          ),
-          Text(
-            'Temp: ${_temperature?.toStringAsFixed(1)} Min: ${_tempMin?.toStringAsFixed(1)} '
-            'Max: ${_tempMax?.toStringAsFixed(1)} FeelLike: ${_tempFeelsLike?.toStringAsFixed(1)}',
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Humidity: $_humidity Pressure: $_pressure',
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            'AreaName: $_areaName Country: $_country',
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Weather: $_weatherDescription',
-            style: TextStyle(fontSize: 15),
-          ),
-          Text(
-            'icon: $_weatherIcon Code: $_weatherConditionCode',
-            style: TextStyle(fontSize: 15),
-          ),
-          _weatherIconDisplay(),
-          // Expanded(child: _weatherIconDisplay()),
-        ],
-      ),
-    );
+    return _weatherView();
   }
-
-
 }

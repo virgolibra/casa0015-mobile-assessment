@@ -12,9 +12,9 @@ import 'dart:developer';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets.dart';
+
 enum AppState { NOT_DOWNLOADED, DOWNLOADING, FINISHED_DOWNLOADING }
-
-
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(
@@ -44,7 +44,6 @@ class ItemDetailPage extends StatefulWidget {
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
-
   AppState _state = AppState.NOT_DOWNLOADED;
 
   late GoogleMapController mapController;
@@ -92,7 +91,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         DateFormat('E  dd MMMM yyyy  HH:mm:ss').format(dateTime!);
 
     date =
-        '${dateTime!.day.toString()}/${dateTime!.month.toString()}/${dateTime!.year.toString()}';
+        '${dateTime!.day.toString()} ${DateFormat('MMMM').format(dateTime!)} ${dateTime!.year.toString()}';
     time =
         '${dateTime!.hour.toString()}:${dateTime!.minute.toString()}:${dateTime!.second.toString()}';
     weekday = DateFormat('EEEE').format(dateTime!);
@@ -117,7 +116,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
   void _getAddress() async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(widget.lat, widget.lon);
-    log("placemarks $placemarks");
+    // log("placemarks $placemarks");
 
     // List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     setState(() {
@@ -146,26 +145,27 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     try {
       imageUrl = await storageRef
           .child(
-          'images/spendingReport/${FirebaseAuth.instance.currentUser?.uid}${widget.imageId}')
+              'images/spendingReport/${FirebaseAuth.instance.currentUser?.uid}${widget.imageId}')
           .getDownloadURL();
       log('22222222222222222222222222222222$imageUrl!');
 
       setState(() {
         _state = AppState.FINISHED_DOWNLOADING;
       });
-
     } on FirebaseException catch (e) {
       // Handle any errors.
     }
   }
 
   Widget contentFinishedDownload() {
-    return Center(
-      child: SizedBox(
-        height: 200,
-        width: 200,
-        child: Image(image: NetworkImage(imageUrl!)),
-      )
+    return Column(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height*0.6 ,
+          width:  MediaQuery.of(context).size.width * 0.95,
+          child: Image(image: NetworkImage(imageUrl!)),
+        ),
+      ],
     );
   }
 
@@ -200,8 +200,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
   Widget _resultView() => _state == AppState.FINISHED_DOWNLOADING
       ? contentFinishedDownload()
       : _state == AppState.DOWNLOADING
-      ? contentDownloading()
-      : contentNotDownloaded();
+          ? contentDownloading()
+          : contentNotDownloaded();
 
   @override
   Widget build(BuildContext context) {
@@ -213,57 +213,215 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          formattedDateTime!,
+          widget.item,
           style: TextStyle(
             fontSize: 18,
           ),
         ),
       ),
       backgroundColor: Color(0xffF5E0C3),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: ListView(
         children: [
           SizedBox(
-            height: 20,
+            height: 5,
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              liteModeEnabled: true,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(widget.lat, widget.lon),
-                zoom: 13.0,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.85,
+              decoration: BoxDecoration(
+                  color: const Color(0xffDEC29B),
+                  borderRadius: BorderRadius.circular(10)),
+              child: ListView(
+                // physics: NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        'Item Detail',
+                        style: TextStyle(
+                            fontSize: 22,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              formattedDateTime!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    height: 8,
+                    thickness: 2,
+                    indent: 0,
+                    endIndent: 0,
+                    color: Colors.black87,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      liteModeEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(widget.lat, widget.lon),
+                        zoom: 13.0,
+                      ),
+                      myLocationButtonEnabled: false,
+                      myLocationEnabled: false,
+                      mapToolbarEnabled: false,
+                      markers: Set<Marker>.of(_markers),
+                    ),
+                  ),
+                  Text('Somewhere in ${_address!}'),
+                  const Divider(
+                    height: 8,
+                    thickness: 2,
+                    indent: 0,
+                    endIndent: 0,
+                    color: Colors.black87,
+                  ),
+
+
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: Icon(
+                          iconsList[widget.iconIndex],
+                          size: 80,
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          // crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '£',
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                            Text(
+                              widget.price,
+                              style: const TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 130,
+                    child: ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          child: ListTile(
+                            leading: const Icon(Icons.drive_file_rename_outline_rounded),
+                            minLeadingWidth: 2,
+                            title: const Text('Item'),
+                            selected: false,
+                            trailing: Text(
+                                widget.item,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                          child: ListTile(
+                            leading: const Icon(Icons.category_rounded,),
+                            minLeadingWidth: 2,
+                            title: const Text('Category'),
+                            selected: false,
+                            trailing: Text(
+                              widget.category,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                          child: ListTile(
+                            leading: const Icon(Icons.punch_clock_rounded),
+                            minLeadingWidth: 2,
+                            title: const Text('Time Added'),
+                            selected: false,
+                            trailing: Text(
+                              time!,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                          child: ListTile(
+                            leading: const Icon(Icons.date_range_rounded),
+                            minLeadingWidth: 2,
+                            title: const Text('Date Added'),
+                            selected: false,
+                            trailing: Text(
+                              date!,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    height: 8,
+                    thickness: 2,
+                    indent: 0,
+                    endIndent: 0,
+                    color: Colors.black87,
+                  ),
+                  // Text(widget.item, style: TextStyle(fontSize: 18),),
+                  //
+                  // Text(_address!),
+                  // Text(widget.item),
+                  // Text(widget.price),
+                  // Text(widget.category),
+                  // Text(widget.iconIndex.toString()),
+                  // Text('$time  $date  $weekday'),
+                  // Text(formattedDateTime!),
+                  // Text(widget.imageId),
+                  // Text(widget.isReceiptUpload.toString()),
+                  const IconAndDetail(Icons.receipt_rounded, 'Receipt'),
+                  widget.isReceiptUpload == true
+                      ? _resultView()
+                      : const Text(
+                          'No receipt upload',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                ],
               ),
-              myLocationButtonEnabled: false,
-              myLocationEnabled: false,
-              mapToolbarEnabled: false,
-              markers: Set<Marker>.of(_markers),
             ),
           ),
-          Icon(
-            iconsList[widget.iconIndex],
-            size: 50,
-          ),
-          Text(_address!),
-          Text(widget.item),
-          Text(widget.price),
-          Text(widget.category),
-          Text(widget.iconIndex.toString()),
-          Text('$time  $date  $weekday'),
-          Text(formattedDateTime!),
-          Text(widget.imageId),
-          Text(widget.isReceiptUpload.toString()),
-
-          widget.isReceiptUpload == true
-              ?   _resultView()
-              : const Text(
-            'No receipt',
-            style: TextStyle(fontSize: 16),
-          ),
-
-
         ],
       ),
     );

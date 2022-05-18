@@ -24,11 +24,9 @@ class _SpendingSettingPageState extends State<SpendingSettingPage> {
           ElevatedButton(
             child: const Text('Log Out'),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
-              );
+              Navigator.pop(context);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login_page', ModalRoute.withName('login_page'));
             },
           ),
           ElevatedButton(

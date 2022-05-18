@@ -59,7 +59,7 @@ class _SpendingBasePage extends State<SpendingBasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffDEC29B),
+      backgroundColor: Color(0xffF5E0C3),
       appBar: AppBar(
         title: const Text('Money Tracker'),
       ),
@@ -83,7 +83,8 @@ class _SpendingBasePage extends State<SpendingBasePage> {
         },
       ),
       bottomNavigationBar: BottomBar(
-        backgroundColor: const Color(0xffF5E0C3),
+        backgroundColor: const Color(0xffE09E45),
+
         selectedIndex: _currentPage,
         onTap: (int index) {
           _pageController.jumpToPage(index);
@@ -93,22 +94,23 @@ class _SpendingBasePage extends State<SpendingBasePage> {
           BottomBarItem(
             icon: Icon(Icons.home),
             title: Text('Home'),
-            activeColor: Color(0xff936F3E),
+            activeColor: Color(0xffF5E0C3),
           ),
           BottomBarItem(
             icon: Icon(Icons.add_box_rounded),
             title: Text('Add Item'),
-            activeColor: Color(0xff936F3E),
+            activeColor: Color(0xffF5E0C3),
           ),
           BottomBarItem(
             icon: Icon(Icons.receipt_long_rounded),
             title: Text('Transaction'),
-            activeColor: Color(0xff936F3E),
+            activeColor: Color(0xffF5E0C3),
           ),
           BottomBarItem(
             icon: Icon(Icons.settings),
             title: Text('Settings'),
-            activeColor: Color(0xff936F3E),
+            activeColor: Color(0xffF5E0C3),
+
           ),
         ],
       ),

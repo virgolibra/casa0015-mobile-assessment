@@ -81,7 +81,7 @@ class ListElement extends StatelessWidget {
           ),
           title: Text(item),
           subtitle: Text(category),
-          tileColor: const Color(0xffF5E0C3),
+          tileColor: const Color(0xffDEC29B),
 
           trailing: SizedBox(
             height: 40,
@@ -232,3 +232,4 @@ class StyledIconButton3 extends StatelessWidget {
     label: label,
   );
 }
+

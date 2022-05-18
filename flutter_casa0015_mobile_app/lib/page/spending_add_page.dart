@@ -73,51 +73,56 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xffDEC29B),
-      child: ListView(
-        children: <Widget>[
-          // Image.asset('assets/image1.jpg'),
-          const SizedBox(height: 4),
-          // const IconAndDetail(Icons.category_rounded, 'Select a category'),
-          Container(
-            child: Text('Select a category'),
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-                color: const Color(0xffC9A87C),
-                borderRadius: BorderRadius.circular(8)),
-          ),
-          // Container(
-          //     color: const Color(0xffE09E45),
-          //     child: const IconAndDetail(
-          //         Icons.login_rounded, 'Message Test Page')),
-          // const Header('Discussion'),
-
-          Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-                color: const Color(0xffC9A87C),
-                borderRadius: BorderRadius.circular(18)),
-            child: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.8,
+        decoration: BoxDecoration(
+            color: const Color(0xffDEC29B),
+            borderRadius: BorderRadius.circular(10)),
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            // Image.asset('assets/image1.jpg'),
+            const SizedBox(height: 2),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Container(
-                //   child: Text(iconsListDescription[buttonOnPressed]),
-                //   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                //   decoration: BoxDecoration(
-                //       color: const Color(0xffC9A87C),
-                //       borderRadius: BorderRadius.circular(8)),
-                // ),
-                SizedBox(
-                  height: 10,
+                const Text(
+                  'Add Item',
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w700),
                 ),
-                Text(
-                  iconsListDescription[buttonOnPressed],
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Color(0xffF5E0C3),
-                      fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [
+                      Text(
+                        'Choose a category to get started',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+              ],
+            ),
+            const Divider(
+              height: 8,
+              thickness: 2,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black87,
+            ),
+
+            Column(
+              children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 120,
@@ -126,6 +131,8 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                   //     color: const Color(0xffC9A87C),
                   //     borderRadius: BorderRadius.circular(10)),
                   child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 50,
@@ -154,76 +161,83 @@ class _SpendingAddPageState extends State<SpendingAddPage> {
                       );
                     },
                   ),
-                )
-              ],
-            ),
-          ),
-
-          Consumer<ApplicationState>(
-            builder: (context, appState, _) => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // SpendingReport(
-                //   addMessage: (message, type) =>
-                //       appState.addMessageToSpendingReport(message, type),
-                //   messages: appState.spendingReportMessages,
-                // ),
-                AddSpendingItem(
-                  addItem: (item, price, imageId, isReceiptUpload) => appState.addMessageToSpendingReport(
-                      item,
-                      price,
+                ),
+                Row(
+                  children: [
+                    Text('Selected Category: '),
+                    Text(
                       iconsListDescription[buttonOnPressed],
-                      buttonOnPressed,
-                      autoLat!,
-                      autoLon!,
-                  imageId,
-                  isReceiptUpload),
-
-                  // messages: appState.spendingReportMessages,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-
-                const Divider(
-                  height: 8,
-                  thickness: 2,
-                  indent: 8,
-                  endIndent: 8,
-                  color: Color(0xff936F3E),
-                ),
-                // DisplaySpendingItem(
-                //   messages: appState.spendingReportMessages,
-                // ),
               ],
             ),
-          ),
-          //
-          // Text(
-          //   'Lat: $autoLat',
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // Text(
-          //   'Lon: $autoLon',
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // const Divider(
-          //   height: 8,
-          //   thickness: 2,
-          //   indent: 8,
-          //   endIndent: 8,
-          //   color: Colors.grey,
-          // ),
-          // ElevatedButton(
-          //   child: const Text('Spending'),
-          //   onPressed: () {
-          //     Navigator.pushNamed(context, '/spending_display_page');
-          //     // Navigator.pop(context);
-          //   },
-          // ),
-          //
-          // const Header("CASA0015 Assessment"),
-          // const Paragraph(
-          //   'Mobile application development for casa0015-assessment',
-          // ),
-        ],
+
+            Consumer<ApplicationState>(
+              builder: (context, appState, _) => Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // SpendingReport(
+                  //   addMessage: (message, type) =>
+                  //       appState.addMessageToSpendingReport(message, type),
+                  //   messages: appState.spendingReportMessages,
+                  // ),
+                  AddSpendingItem(
+                    addItem: (item, price, imageId, isReceiptUpload) =>
+                        appState.addMessageToSpendingReport(
+                            item,
+                            price,
+                            iconsListDescription[buttonOnPressed],
+                            buttonOnPressed,
+                            autoLat!,
+                            autoLon!,
+                            imageId,
+                            isReceiptUpload),
+
+                    // messages: appState.spendingReportMessages,
+                  ),
+
+                  // DisplaySpendingItem(
+                  //   messages: appState.spendingReportMessages,
+                  // ),
+                ],
+              ),
+            ),
+
+            //
+            // Text(
+            //   'Lat: $autoLat',
+            //   style: TextStyle(fontSize: 15),
+            // ),
+            // Text(
+            //   'Lon: $autoLon',
+            //   style: TextStyle(fontSize: 15),
+            // ),
+            // const Divider(
+            //   height: 8,
+            //   thickness: 2,
+            //   indent: 8,
+            //   endIndent: 8,
+            //   color: Colors.grey,
+            // ),
+            // ElevatedButton(
+            //   child: const Text('Spending'),
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/spending_display_page');
+            //     // Navigator.pop(context);
+            //   },
+            // ),
+            //
+            // const Header("CASA0015 Assessment"),
+            // const Paragraph(
+            //   'Mobile application development for casa0015-assessment',
+            // ),
+          ],
+        ),
       ),
     );
   }

@@ -332,3 +332,7 @@ Upload and display image.
 
 
 Finish UI optimise for login page
+
+
+
+Finish UI optimise for all pages.

@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../widgets.dart';
+
 enum CaptureState {
   capturing,
   captured,
@@ -45,8 +47,6 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
-
-    downloadImage();
   }
 
   @override
@@ -54,22 +54,6 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
     // Dispose of the controller when the widget is disposed.
     _controller.dispose();
     super.dispose();
-  }
-
-  Future<void> downloadImage() async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final islandRef = storageRef.child(
-        "images/spendingReport/H731NtAnbnPrhB02ZDj585bb9Ma2/CAP638979139413938825.jpg");
-
-    try {
-      imageUrl = await storageRef
-          .child(
-              "images/spendingReport/H731NtAnbnPrhB02ZDj585bb9Ma2/CAP638979139413938825.jpg")
-          .getDownloadURL();
-      log(imageUrl);
-    } on FirebaseException catch (e) {
-      // Handle any errors.
-    }
   }
 
   @override
@@ -81,7 +65,8 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
           // You must wait until the controller is initialized before displaying the
           // camera preview. Use a FutureBuilder to display a loading spinner until the
           // controller has finished initializing.
-          body: ListView(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FutureBuilder<void>(
                 future: _initializeControllerFuture,
@@ -95,47 +80,62 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
                   }
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 60,
+                width: 250,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: const Color(0xff6D42CE),
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      textStyle: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold)),
+                  onPressed: () async {
+                    // Take the Picture in a try / catch block. If anything goes wrong,
+                    // catch the error.
+                    try {
+                      // Ensure that the camera is initialized.
+                      await _initializeControllerFuture;
+                      // Attempt to take a picture and get the file `image`
+                      // where it was saved.
+                      image = await _controller.takePicture();
+                      setState(() {
+                        captureState = CaptureState.captured;
+                      });
+                    } catch (e) {
+                      // If an error occurs, log the error to the console.
+                      print(e);
+                    }
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.camera_rounded,
+                        color: Color(0xffF5E0C3),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'Click to Capture',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xffF5E0C3),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
-          ),
-
-          floatingActionButton: FloatingActionButton(
-            // Provide an onPressed callback.
-            onPressed: () async {
-              // Take the Picture in a try / catch block. If anything goes wrong,
-              // catch the error.
-              try {
-                // Ensure that the camera is initialized.
-                await _initializeControllerFuture;
-
-                // Attempt to take a picture and get the file `image`
-                // where it was saved.
-                 image = await _controller.takePicture();
-                setState(() {
-                  captureState = CaptureState.captured;
-                });
-
-                // If the picture was taken, display it on a new screen.
-                // await Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => DisplayPictureScreen(
-                //       // Pass the automatically generated path to
-                //       // the DisplayPictureScreen widget.
-                //       imagePath: image.path,
-                //
-                //       imageUrl: imageUrl,
-                //     ),
-                //   ),
-                // );
-              } catch (e) {
-                // If an error occurs, log the error to the console.
-                print(e);
-              }
-            },
-            child: const Icon(Icons.camera_alt),
           ),
         );
       case CaptureState.captured:
-        return DisplayPictureScreen(imagePath: image.path, imageUrl: imageUrl);
+        return DisplayPictureScreen(imagePath: image.path);
       default:
         return Row(
           children: const [
@@ -146,25 +146,21 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
   }
 }
 
-
 class ImageData {
   late String imagePath;
   late bool receiptStatus;
 
-  ImageData(String imagePath, bool receiptStatus){
+  ImageData(String imagePath, bool receiptStatus) {
     this.imagePath = imagePath;
     this.receiptStatus = receiptStatus;
   }
 }
 
-
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
 
-  final String imageUrl;
-  const DisplayPictureScreen(
-      {Key? key, required this.imagePath, required this.imageUrl})
+  const DisplayPictureScreen({Key? key, required this.imagePath})
       : super(key: key);
 
   @override
@@ -172,9 +168,7 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
-
   late ImageData imageData;
-
 
   @override
   void initState() {
@@ -183,77 +177,38 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     imageData = ImageData(widget.imagePath, false);
   }
 
-  void uploadImage() {
-    final storage = FirebaseStorage.instance;
-    File file = File(widget.imagePath);
-
-    final imageName =
-        widget.imagePath.substring(widget.imagePath.lastIndexOf('/'));
-
-    // Create the file metadata
-    final metadata = SettableMetadata(contentType: "image/jpeg");
-
-// Create a reference to the Firebase Storage bucket
-    final storageRef = FirebaseStorage.instance.ref();
-
-// Upload file and metadata to the path 'images/mountains.jpg'
-    final uploadTask = storageRef
-        .child(
-            'images/spendingReport/${FirebaseAuth.instance.currentUser?.uid}/$imageName')
-        .putFile(file, metadata);
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-      switch (taskSnapshot.state) {
-        case TaskState.running:
-          final progress =
-              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-          print("Upload is $progress% complete.");
-          break;
-        case TaskState.paused:
-          print("Upload is paused.");
-          break;
-        case TaskState.canceled:
-          print("Upload was canceled");
-          break;
-        case TaskState.error:
-          // Handle unsuccessful uploads
-          break;
-        case TaskState.success:
-          // Handle successful uploads on complete
-          // ...
-          break;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const IconAndDetail(Icons.photo_rounded, 'Captured Photo Preview'),
           Image.file(File(widget.imagePath)),
-          Text(
-            'Path: ${widget.imagePath}',
-            style: TextStyle(fontSize: 15,),
-          ),
-          ElevatedButton(
-            child: const Text('Upload Image'),
-            onPressed: () {
-              uploadImage();
-            },
+          // Text(
+          //   'Path: ${widget.imagePath}',
+          //   style: TextStyle(
+          //     fontSize: 15,
+          //   ),
+          // ),
+          SizedBox(
+            height: 30,
           ),
           ElevatedButton(
             child: const Text('Continue'),
+            style: ElevatedButton.styleFrom(
+                primary: const Color(0xff6D42CE),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             onPressed: () {
-
               imageData.receiptStatus = true;
               Navigator.of(context).pop(imageData);
             },
-          ),
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Image(image: NetworkImage(widget.imageUrl)),
           ),
         ],
       ),
