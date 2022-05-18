@@ -46,8 +46,27 @@ The image used in this assessment are created by myself.
 
 
 
+## Features
 
+#### Current Features
++ Support user account create and login
++ Account Info and User data are stored based on Firebase Platform
++ Support get and store user's current location based on Google Map
++ Support real-time weather fetching based on user's current location
++ Store item detailed information (Description, amount, date, time, location, and captured receipt)
++ Item category
++ View all stored items
++ Support item delete from the database
++ Support account switch,  data for different accounts are independent
 
+#### Upcoming Features
++ Classfication items in display page by category etc
++ Sort items in display page by time, amount etc.
++ Filter items in display page by time, amount etc.
++ Add stastic features (total amount, category amount etc.)
++ Support optional location added.
++ Store weather when the item is created.
++ Add budget feature.
 
 
 
