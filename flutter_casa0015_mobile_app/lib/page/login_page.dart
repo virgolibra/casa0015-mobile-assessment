@@ -885,32 +885,7 @@ class _StartHomeState extends State<StartHome> {
           ),
         ),
         const Text('Click to enter main page'),
-        Padding(
-          padding: const EdgeInsets.only(top: 18, bottom: 20),
-          child: SizedBox(
-            width: 100,
-            height: 50,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.5);
-                    }
-                    return null; // Use the component's default.
-                  },
-                ),
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/home_page');
-              },
-              child: const Text('MainPage'),
-            ),
-          ),
-        ),
+      
       ],
     );
   }

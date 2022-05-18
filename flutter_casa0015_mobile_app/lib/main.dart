@@ -2,24 +2,14 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_casa0015_mobile_app/page/spending_base_page.dart';
 import './theme/custom_theme.dart';
-import './page/first_page.dart';
-import './page/home_page.dart';
-import './page/map_test_page.dart';
-import './page/weather_page.dart';
+
 import './page/login_page.dart';
 import './page/spending_display_page.dart';
-import './page/camera_test_page.dart';
 
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+
 import 'package:provider/provider.dart';
 
-import 'firebase_options.dart';
-import 'authentication.dart';
-import 'widgets.dart';
 
 
 import 'splash.dart';
@@ -55,11 +45,7 @@ class MyApp extends StatelessWidget {
       // home: const LoginPage(), // home:   MyHomePage(),
       home: const Splash(), // home:   MyHomePage(),
       routes: {
-        '/home_page': (BuildContext context) =>
-            const MyHomePage(title: 'HomePage'),
-        '/first_page': (BuildContext context) => const FirstPage(),
-        '/map_test_page': (BuildContext context) => const MapTestPage(),
-        '/weather_page': (BuildContext context) => const WeatherPage(),
+
         '/login_page': (BuildContext context) => const LoginPage(),
         // '/message_test_page': (BuildContext context) => const MessageTestPage(),
         '/spending_display_page': (BuildContext context) => const SpendingDisplayPage(),
